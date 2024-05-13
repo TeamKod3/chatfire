@@ -45,6 +45,7 @@ setInterval( async () => {
     const conversas = await getConversasWhereBot()
     if(conversas) {
         for (const conversa of conversas) {
+            console.log({conversa})
             const {horario_ultima_mensagem} = conversa
             const horarioUltimaMensagem = new Date(horario_ultima_mensagem)
             const horarioAtual = new Date()
