@@ -60,6 +60,7 @@ setInterval( async () => {
             if(tempoRespostaExpirado) {
                 const instance = WhatsAppInstances[conversa.key_instancia]
                 const setor = await getSingleSetor(bot.setor_inatividade)
+                // asd
                 console.log({setor, bot})
                 await updateDataInTable('conversas', {id: conversa.id}, {Status: "Espera", id_setor: setor.id})
                 await instance.sendTextMessage(
