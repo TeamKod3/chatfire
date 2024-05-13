@@ -62,7 +62,7 @@ setInterval( async () => {
                 const setor = await getSingleSetor(bot.setor_inatividade)
                 // asd
                 console.log({setor, bot})
-                await updateDataInTable('conversas', {id: conversa.id}, {Status: "Espera", id_setor: setor.id})
+                await updateDataInTable('conversas', {id: conversa.id}, {Status: "Espera", id_setor: setor.id, isespera: true, isforahorario: false})
                 await instance.sendTextMessage(
                     conversa.numero_contato,
                     `Atendimento transferido para o setor ${setor.Nome} por inatividade do usuário`
