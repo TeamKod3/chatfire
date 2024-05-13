@@ -55,6 +55,7 @@ setInterval( async () => {
 
             const horarioMaisTempoTransferencia = new Date(horarioUltimaMensagem.getTime() + tempoTransferenciaMs)
 
+            console.log({horarioAtual, horarioMaisTempoTransferencia})
             if(horarioAtual >= horarioMaisTempoTransferencia) {
                 const instance = WhatsAppInstances[conversa.key_instancia]
                 const setor = getSingleSetor(bot.setor_inatividade)
