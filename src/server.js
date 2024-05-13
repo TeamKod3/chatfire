@@ -55,10 +55,12 @@ setInterval( async () => {
 
             const horarioMaisTempoTransferencia = new Date(horarioUltimaMensagem.getTime() + tempoTransferenciaMs)
 
-            console.log({horarioAtual, horarioMaisTempoTransferencia})
-            if(horarioAtual >= horarioMaisTempoTransferencia) {
+            const tempoRespostaExpirado = horarioAtual >= horarioMaisTempoTransferencia
+            console.log({horarioAtual, horarioMaisTempoTransferencia, tempoRespostaExpirado})
+            if(tempoRespostaExpirado) {
                 const instance = WhatsAppInstances[conversa.key_instancia]
                 const setor = getSingleSetor(bot.setor_inatividade)
+                console.log({setor})
                 await updateDataInTable('conversas', {id: conversa.id}, {Status: "Espera", id_setor: setor.id})
                 await instance.sendTextMessage(
                     conversa.numero_contato,
