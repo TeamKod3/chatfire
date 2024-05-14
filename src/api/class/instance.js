@@ -24,7 +24,7 @@ const mime = require('mime-types')
 
 
 const saveStats = require('../helper/saveStats');
-const {sendDataToSupabase, adicionaRegistro, uploadSUp, fetchAllDataFromTable, deleteDataFromtable, updateDataInTable, getIdConexoes, getSingleConversa, getSingleWebhook, getIdWebHookMessage, getContato, fetchSetores, getConexao} = require('../helper/sendSupabase');
+const {sendDataToSupabase, adicionaRegistro, uploadSUp, fetchAllDataFromTable, deleteDataFromtable, updateDataInTable, getIdConexoes, getSingleConversa, getSingleWebhook, getIdWebHookMessage, getContato, fetchSetores, getConexao, getSingleBot} = require('../helper/sendSupabase');
 
 class WhatsAppInstance {
     socketConfig = {
@@ -430,8 +430,35 @@ class WhatsAppInstance {
                                     })
                                 }else if (conversa.Status === 'Finalizado') {
                                     const imgUrl = await sock.profilePictureUrl(remoteJid)
-                                
-                                await this.workWithMessageType(messageType, sock, msg, idApi, fileUrl, bucketUrl)
+                                const {tempo_retorno} = getSingleBot(this.empresaId)
+                                const {horario_ultima_mensagem} = conversa
+                                const horarioUltimaMensagem = new Date(horario_ultima_mensagem)
+                                const horarioAtual = new Date()
+                                const tempoRetornoMs = tempo_retorno * 60 * 1000
+                                const horarioMaisTempoRetorno = new Date(horarioUltimaMensagem.getTime() + tempoRetornoMs)
+                                const tempoRetornoValido = horarioAtual <= horarioMaisTempoRetorno
+                                if(tempoRetornoValido) {
+                                    await this.workWithMessageType(messageType, sock, msg, conversa.id_api, fileUrl, bucketUrl)
+                                        webhook = await sendDataToSupabase('webhook', {
+                                            data: msg,
+                                            contatos: msg.key.remoteJid.split('@')[0],
+                                            fromMe: false,
+                                            mensagem: msg.message.conversation ? msg.message.conversation : null,
+                                            'áudio': msg.message.audioMessage ? msg.message.audioMessage.url : null,
+                                            imagem: msg.message.imageMessage? msg.message.imageMessage.url : null,
+                                            'legenda imagem': msg.message.imageMessage ? msg.message.imageMessage.caption : null,
+                                            file: msg.message.documentMessage ? msg.message.documentMessage.url : null,
+                                            'legenda file': msg.message.documentWithCaptionMessage ? msg.message.documentWithCaptionMessage.message.caption : null,
+                                            'id_api_conversa' : conversa.id_api,
+                                            video: msg.message.videoMessage ? msg.message.videoMessage.url : null,
+                                            idMensagem: msg.key.id,
+                                            replyWebhook: quotedId,
+                                            id_contato_webhook: contactId,
+                                            instance_key: this.key
+                                        })
+                                        await updateDataInTable('conversas', {id: conversa.id}, {webhook_id_ultima: webhook.id, ref_contatos: contatoId, Status: "Em Atendimento"})
+                                } else {
+                                    await this.workWithMessageType(messageType, sock, msg, idApi, fileUrl, bucketUrl)
                                 webhook = await sendDataToSupabase('webhook', {
                                     data: msg,
                                     contatos: msg.key.remoteJid.split('@')[0],
@@ -460,6 +487,9 @@ class WhatsAppInstance {
                                     webhook_id_ultima: webhook.id,
                                     ref_contatos: contatoId
                                 })
+                                }
+
+                                
                                 }
 
                             } else {
