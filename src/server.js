@@ -10,6 +10,7 @@ const initDBStats = require('./api/db/db')
 const { Session } = require('./api/class/session')
 const connectToCluster = require('./api/helper/connectMongoClient')
 const { getConversasWhereBot, getSingleBot, getSingleSetor, updateDataInTable } = require('./api/helper/sendSupabase')
+const { BSONType } = require('mongodb')
 
 if (config.mongoose.enabled) {
     mongoose.set('strictQuery', true);
@@ -41,33 +42,31 @@ const exitHandler = () => {
 }
 
 setInterval( async () => {
-    console.log('Rodando Interval')
     const conversas = await getConversasWhereBot()
     if(conversas) {
         for (const conversa of conversas) {
-            console.log({conversa})
             const {horario_ultima_mensagem} = conversa
             const horarioUltimaMensagem = new Date(horario_ultima_mensagem)
             const horarioAtual = new Date()
             const bot = await getSingleBot(conversa.ref_empresa)
-            const {tempo_transferencia} = bot
-            const tempoTransferenciaMs = tempo_transferencia * 60 * 1000
+            if(bot.Status === true) {
+                const {tempo_transferencia} = bot
+                const tempoTransferenciaMs = tempo_transferencia * 60 * 1000
 
-            const horarioMaisTempoTransferencia = new Date(horarioUltimaMensagem.getTime() + tempoTransferenciaMs)
+                const horarioMaisTempoTransferencia = new Date(horarioUltimaMensagem.getTime() + tempoTransferenciaMs)
 
-            const tempoRespostaExpirado = horarioAtual >= horarioMaisTempoTransferencia
-            console.log({horarioAtual, horarioMaisTempoTransferencia, tempoRespostaExpirado})
-            if(tempoRespostaExpirado) {
-                const instance = WhatsAppInstances[conversa.key_instancia]
-                const setor = await getSingleSetor(bot.setor_inatividade)
-                // asd
-                console.log({setor, bot})
-                await updateDataInTable('conversas', {id: conversa.id}, {Status: "Espera", id_setor: setor.id, isespera: true, isforahorario: false})
-                await instance.sendTextMessage(
-                    conversa.numero_contato,
-                    `Atendimento transferido para o setor ${setor.Nome} por inatividade do usuário`
-                )
+                const tempoRespostaExpirado = horarioAtual >= horarioMaisTempoTransferencia
+                if(tempoRespostaExpirado) {
+                    const instance = WhatsAppInstances[conversa.key_instancia]
+                    const setor = await getSingleSetor(bot.setor_inatividade)
+                    await updateDataInTable('conversas', {id: conversa.id}, {Status: "Espera", id_setor: setor.id, isespera: true, isforahorario: false})
+                    await instance.sendTextMessage(
+                        conversa.numero_contato,
+                        `Atendimento transferido para o setor ${setor.Nome} por inatividade do usuário`
+                    )
+                }
             }
+            
         }
     }
 }, 1000 * 60)
