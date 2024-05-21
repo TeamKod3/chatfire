@@ -182,6 +182,7 @@ class WhatsAppInstance {
             }
             console.log('antes do if do qr')
             console.log({clientId: this.clientId})
+            console.log({connection})
             console.log({qr})
             if (qr) {
                 
