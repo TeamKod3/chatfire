@@ -42,6 +42,7 @@ class WhatsAppInstance {
     clientId = null
     empresaId = null
     duplicado = false
+    contadorDeReconexao = 0
 
     instance = {
         conexaoId: '',
@@ -150,7 +151,7 @@ class WhatsAppInstance {
                     lastDisconnect?.error?.output?.statusCode !==
                     DisconnectReason.loggedOut
                 ) {
-                    console.log('Reiniciando')
+                    this.contadorDeReconexao += 1
                     await this.init()
                 } else {
                     console.log('else do reiniciando')
@@ -183,6 +184,7 @@ class WhatsAppInstance {
                 this.instance.online = true
             }
             console.log({clientId: this.clientId})
+            console.log({contador: this.contadorDeReconexao})
             if (qr) {
                 
                 QRCode.toDataURL(qr).then((url) => {
