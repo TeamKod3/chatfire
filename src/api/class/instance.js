@@ -144,6 +144,7 @@ class WhatsAppInstance {
         // on socket closed, opened, connecting
         sock?.ev.on('connection.update', async (update) => {
             console.log('entrou no connection update')
+            console.log({update})
             const { connection, lastDisconnect, qr } = update
             if (connection === 'close') {
                 // reconnect if not logged out
