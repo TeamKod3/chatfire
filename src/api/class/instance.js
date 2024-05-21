@@ -152,6 +152,7 @@ class WhatsAppInstance {
                     lastDisconnect?.error?.output?.statusCode !==
                     DisconnectReason.loggedOut
                 ) {
+                    console.log({error: update.lastDisconnect.error})
                     this.contadorDeReconexao += 1
                     if(this.contadorDeReconexao === 10) {
                         await this.collection.drop().then((r) => {
