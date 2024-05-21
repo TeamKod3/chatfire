@@ -142,6 +142,7 @@ class WhatsAppInstance {
 
         // on socket closed, opened, connecting
         sock?.ev.on('connection.update', async (update) => {
+            console.log('entrou no connection update')
             const { connection, lastDisconnect, qr } = update
             if (connection === 'close') {
                 // reconnect if not logged out
@@ -179,7 +180,8 @@ class WhatsAppInstance {
                 }
                 this.instance.online = true
             }
-
+            console.log('antes do if do qr')
+            console.log({qr})
             if (qr) {
                 
                 QRCode.toDataURL(qr).then((url) => {
