@@ -181,6 +181,7 @@ class WhatsAppInstance {
                 this.instance.online = true
             }
             console.log('antes do if do qr')
+            console.log({clientId: this.clientId})
             console.log({qr})
             if (qr) {
                 
