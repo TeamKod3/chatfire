@@ -150,8 +150,10 @@ class WhatsAppInstance {
                     lastDisconnect?.error?.output?.statusCode !==
                     DisconnectReason.loggedOut
                 ) {
+                    console.log('Reiniciando')
                     await this.init()
                 } else {
+                    console.log('else do reiniciando')
                     await this.collection.drop().then((r) => {
                         logger.info('STATE: Droped collection')
                     })
@@ -180,10 +182,7 @@ class WhatsAppInstance {
                 }
                 this.instance.online = true
             }
-            console.log('antes do if do qr')
             console.log({clientId: this.clientId})
-            console.log({connection})
-            console.log({qr})
             if (qr) {
                 
                 QRCode.toDataURL(qr).then((url) => {
