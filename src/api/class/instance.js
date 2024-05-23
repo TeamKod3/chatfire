@@ -28,6 +28,7 @@ const {sendDataToSupabase, adicionaRegistro, uploadSUp, fetchAllDataFromTable, d
 
 class WhatsAppInstance {
     socketConfig = {
+        version: [2, 2413, 1],
         defaultQueryTimeoutMs: undefined,
         printQRInTerminal: false,
         logger: pino({
