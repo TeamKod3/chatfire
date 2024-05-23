@@ -144,8 +144,6 @@ class WhatsAppInstance {
 
         // on socket closed, opened, connecting
         sock?.ev.on('connection.update', async (update) => {
-            console.log('entrou no connection update')
-            console.log({update})
             const { connection, lastDisconnect, qr } = update
             if (connection === 'close') {
                 // reconnect if not logged out
@@ -153,7 +151,6 @@ class WhatsAppInstance {
                     lastDisconnect?.error?.output?.statusCode !==
                     DisconnectReason.loggedOut
                 ) {
-                    console.log({error: update.lastDisconnect.error})
                     this.contadorDeReconexao += 1
                     if(this.contadorDeReconexao === 10) {
                         await this.collection.drop().then((r) => {
@@ -167,7 +164,6 @@ class WhatsAppInstance {
                     await this.init()
                     delete WhatsAppInstances[this.key]
                 } else {
-                    console.log('else do reiniciando')
                     await this.collection.drop().then((r) => {
                         logger.info('STATE: Droped collection')
                     })
@@ -196,8 +192,6 @@ class WhatsAppInstance {
                 }
                 this.instance.online = true
             }
-            console.log({clientId: this.clientId})
-            console.log({contador: this.contadorDeReconexao})
             if (qr) {
                 
                 QRCode.toDataURL(qr).then((url) => {
