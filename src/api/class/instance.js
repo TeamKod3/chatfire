@@ -160,9 +160,9 @@ class WhatsAppInstance {
                             await updateDataInTable('conexoes', {id: this.clientId}, {status_conexao: 'desconectado', qrcode: '', Status: false})
                             await deleteDataFromtable('setor_conexao', {id_conexao: this.clientId})
                         }
+                        delete WhatsAppInstances[this.key]
                     }
                     await this.init()
-                    delete WhatsAppInstances[this.key]
                 } else {
                     await this.collection.drop().then((r) => {
                         logger.info('STATE: Droped collection')
