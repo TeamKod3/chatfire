@@ -919,10 +919,13 @@ class WhatsAppInstance {
     }
 
     async getUserStatus(of) {
-        await this.verifyId(this.getWhatsAppId(of))
+        const jid = this.getWhatsAppId(of)
+        await this.verifyId(jid)
+        console.log({jid})
         const status = await this.instance.sock?.fetchStatus(
-            this.getWhatsAppId(of)
+            jid
         )
+        console.log({status})
         return status
     }
 
