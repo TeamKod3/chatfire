@@ -5,7 +5,6 @@ function keyVerification(req, res, next) {
             .status(403)
             .send({ error: true, message: 'no key query was present' })
     }
-    console.log({WhatsAppInstances})
     const instance = WhatsAppInstances[key]
     if (!instance) {
         return res
