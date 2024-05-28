@@ -161,6 +161,7 @@ class WhatsAppInstance {
                             await deleteDataFromtable('setor_conexao', {id_conexao: this.clientId})
                         }
                         delete WhatsAppInstances[this.key]
+                        return
                     }
                     await this.init()
                 } else {
