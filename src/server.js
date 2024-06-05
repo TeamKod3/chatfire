@@ -49,8 +49,8 @@ setInterval( async () => {
             const horarioUltimaMensagem = new Date(horario_ultima_mensagem)
             const horarioAtual = new Date()
             const bot = await getSingleBot(conversa.ref_empresa)
-            console.log({conversa, bot})
-            if(bot.Status === true) {
+            // console.log({conversa, bot})
+            if(bot.ativo === true) {
                 const {tempo_transferencia} = bot
                 const tempoTransferenciaMs = tempo_transferencia * 60 * 1000
 
