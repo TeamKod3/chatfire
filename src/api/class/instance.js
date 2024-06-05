@@ -389,8 +389,7 @@ class WhatsAppInstance {
                             console.log({conversa})
 
                             if(conversa) {
-                                
-                                if (conversa.key_instancia !== this.key || )
+
                                 console.log({status: conversa.Status})
                                 if(conversa.Status === 'Espera' || conversa.Status === 'Em Atendimento' || conversa.Status === 'Bot') {
                                     await this.workWithMessageType(messageType, sock, msg, conversa.id_api, fileUrl, bucketUrl)
