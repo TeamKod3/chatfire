@@ -98,7 +98,7 @@ exports.restore = async (req, res, next) => {
 exports.logout = async (req, res) => {
     let errormsg
     try {
-        await WhatsAppInstances[req.query.key].instance?.sock?.logout()
+        await WhatsAppInstances[req.query.key].logout()
     } catch (error) {
         errormsg = error
     }

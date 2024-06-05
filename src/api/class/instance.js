@@ -389,6 +389,8 @@ class WhatsAppInstance {
                             console.log({conversa})
 
                             if(conversa) {
+                                
+                                if (conversa.key_instancia !== this.key || )
                                 console.log({status: conversa.Status})
                                 if(conversa.Status === 'Espera' || conversa.Status === 'Em Atendimento' || conversa.Status === 'Bot') {
                                     await this.workWithMessageType(messageType, sock, msg, conversa.id_api, fileUrl, bucketUrl)
@@ -1477,6 +1479,13 @@ class WhatsAppInstance {
             
         }
         msg.key['conversaId'] = id_api
+    }
+
+    async logout(){
+        await this.instance.sock?.logout()
+        await updateDataInTable('conexoes', {id: this.clientId}, {status_conexao: 'desconectado', qrcode: '', Status: false})
+        await deleteDataFromtable('setor_conexao', {id_conexao: this.clientId})
+        delete WhatsAppInstances[this.key]
     }
 }
 
