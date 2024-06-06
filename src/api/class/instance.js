@@ -306,12 +306,17 @@ class WhatsAppInstance {
                             console.log({clientId: this.clientId, remoteJid})
                             const conexao = await getConexaoById(this.clientId)
                             if(conexao.isConexaoRetorno) {
-                                const contato = await getContatoById(conexao['id_contato_retorno'])
-                                await this.sendContactMessage(wppUser, {
-                                    fullName: contato.nome,
-                                    organization: contato.nome,
-                                    phoneNumber: contato.numero
-                                })
+                                if(conexao['id_contato_retorno']){
+                                    const contato = await getContatoById(conexao['id_contato_retorno'])
+                                    await this.sendContactMessage(wppUser, {
+                                        fullName: contato.nome,
+                                        organization: contato.nome,
+                                        phoneNumber: contato.numero
+                                    })
+                                }
+                                if(conexao['mensagemRetorno']){
+                                    await this.sendTextMessage(wppUser, conexao['mensagemRetorno'])
+                                }
                                 return
                             }
 
