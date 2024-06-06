@@ -145,6 +145,21 @@ async function getSingleConversa(numero, empresaId) {
     }
 }
 
+async function getSingleConversaByConexao(numero, keyInstancia) {
+    try {
+        const {data, error} = await supabase.from('conversas').select('*').eq('numero_contato', numero).eq('key_instancia', keyInstancia).order('created_at', {ascending: false}).limit(1)
+        if(error) {
+            console.error('Deu erro no supabase erro: ', error)
+            return null
+        } else {
+            return data.length > 0 ? data[0] : null
+        }
+    } catch(error) {
+        console.error('Ocorreu um erro inesperado', error)
+        return null
+    }
+}
+
 async function getSingleSetor(setorId) {
     try {
         const {data, error} = await supabase.from('Setores').select('*').eq('id', setorId).limit(1)
@@ -328,6 +343,7 @@ module.exports = {
     getSingleBot,
     getSingleSetor,
     getConexaoById,
-    getContatoById
+    getContatoById,
+    getSingleConversaByConexao
 };
 

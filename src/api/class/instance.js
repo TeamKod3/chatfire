@@ -24,7 +24,7 @@ const mime = require('mime-types')
 
 
 const saveStats = require('../helper/saveStats');
-const {sendDataToSupabase, adicionaRegistro, uploadSUp, fetchAllDataFromTable, deleteDataFromtable, updateDataInTable, getIdConexoes, getSingleConversa, getSingleWebhook, getIdWebHookMessage, getContato, fetchSetores, getConexao, getSingleBot, getConexaoById, getContatoById} = require('../helper/sendSupabase');
+const {sendDataToSupabase, adicionaRegistro, uploadSUp, fetchAllDataFromTable, deleteDataFromtable, updateDataInTable, getIdConexoes, getSingleConversa, getSingleWebhook, getIdWebHookMessage, getContato, fetchSetores, getConexao, getSingleBot, getConexaoById, getContatoById, getSingleConversaByConexao} = require('../helper/sendSupabase');
 
 class WhatsAppInstance {
     socketConfig = {
@@ -321,7 +321,7 @@ class WhatsAppInstance {
                             }
 
                             const idApi = uuidv4()
-                            const conversa = await getSingleConversa(wppUser, this.empresaId)
+                            const conversa = await getSingleConversaByConexao(wppUser, this.key)
                             let msg = message
 
                             let fileName;
