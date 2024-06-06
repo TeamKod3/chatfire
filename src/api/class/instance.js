@@ -297,7 +297,7 @@ class WhatsAppInstance {
                         if(!message.key.fromMe) {
                             
                             console.log({clientId: this.clientId, remoteJid})
-                            const conexao = getConexaoById(this.clientId)
+                            const conexao = await getConexaoById(this.clientId)
                             if(conexao.isConexaoRetorno) {
                                 console.log('Envia contato')
                                 return
