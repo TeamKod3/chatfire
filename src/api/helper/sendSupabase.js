@@ -204,6 +204,20 @@ async function getContato(numero, empresaId) {
     }
 }
 
+async function getContatoById(contactId) {
+    try {
+        const {data, error} = await supabase.from('contatos').select('*').eq('id', contactId).limit(1)
+        if(error) {
+            console.error('Deu erro no supabase erro: ', error)
+            return null
+        }
+        return data.length > 0 ? data[0] : null
+    }catch(error) {
+        console.error('Ocorreu um erro inesperado', error)
+        return null
+    }
+}
+
 async function updateDataInTable(tableName, matchCriteria, newData) {
     try {
         const {data, error} = await supabase.from(tableName).update(newData).match(matchCriteria)
@@ -314,5 +328,6 @@ module.exports = {
     getSingleBot,
     getSingleSetor,
     getConexaoById,
+    getContatoById
 };
 

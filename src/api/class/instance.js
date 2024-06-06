@@ -24,7 +24,7 @@ const mime = require('mime-types')
 
 
 const saveStats = require('../helper/saveStats');
-const {sendDataToSupabase, adicionaRegistro, uploadSUp, fetchAllDataFromTable, deleteDataFromtable, updateDataInTable, getIdConexoes, getSingleConversa, getSingleWebhook, getIdWebHookMessage, getContato, fetchSetores, getConexao, getSingleBot, getConexaoById} = require('../helper/sendSupabase');
+const {sendDataToSupabase, adicionaRegistro, uploadSUp, fetchAllDataFromTable, deleteDataFromtable, updateDataInTable, getIdConexoes, getSingleConversa, getSingleWebhook, getIdWebHookMessage, getContato, fetchSetores, getConexao, getSingleBot, getConexaoById, getContatoById} = require('../helper/sendSupabase');
 
 class WhatsAppInstance {
     socketConfig = {
@@ -296,17 +296,25 @@ class WhatsAppInstance {
                     if(!isGroup && !isStatus) {
                         if(!message.key.fromMe) {
                             
-                            console.log({clientId: this.clientId, remoteJid})
-                            const conexao = await getConexaoById(this.clientId)
-                            if(conexao.isConexaoRetorno) {
-                                console.log('Envia contato')
-                                return
-                            }
+                            
 
                             let wppUser = remoteJid.split('@')[0]
                             if(wppUser.includes('-')) {
                                 wppUser = wppUser.split('-')[0]
                             }
+
+                            console.log({clientId: this.clientId, remoteJid})
+                            const conexao = await getConexaoById(this.clientId)
+                            if(conexao.isConexaoRetorno) {
+                                const contato = await getContatoById(conexao['id_contato_retorno'])
+                                await this.sendContactMessage(wppUser, {
+                                    fullName: contato.nome,
+                                    organization: contato.nome,
+                                    phoneNumber: contato.numero
+                                })
+                                return
+                            }
+
                             const idApi = uuidv4()
                             const conversa = await getSingleConversa(wppUser, this.empresaId)
                             let msg = message
