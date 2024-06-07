@@ -412,7 +412,7 @@ class WhatsAppInstance {
                                 }
                             }
 
-                            // console.log({mensagem: msg.message})
+                            console.log({mensagem: msg.message})
 
                             if(conversa) {
 
