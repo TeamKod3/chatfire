@@ -405,8 +405,8 @@ class WhatsAppInstance {
                                 return
                             }
 
-                            if(msg.message.ExtendedTextMessage) {
-                                const {text} = msg.message.ExtendedTextMessage
+                            if(msg.message.extendedTextMessage) {
+                                const {text} = msg.message.extendedTextMessage
                                 console.log({text})
                                 if (text === '#sair') {
                                     console.log('Vai sair')
