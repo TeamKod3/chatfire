@@ -405,7 +405,7 @@ class WhatsAppInstance {
                                 return
                             }
 
-                            console.log({mensagem: msg.message.conversation})
+                            console.log({mensagem: msg.message})
 
                             if(conversa) {
 
