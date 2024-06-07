@@ -405,11 +405,10 @@ class WhatsAppInstance {
                                 return
                             }
 
-                            console.log({conversa})
+                            console.log({mensagem: msg.message.conversation})
 
                             if(conversa) {
 
-                                console.log({status: conversa.Status})
                                 if(conversa.Status === 'Espera' || conversa.Status === 'Em Atendimento' || conversa.Status === 'Bot') {
                                     await this.workWithMessageType(messageType, sock, msg, conversa.id_api, fileUrl, bucketUrl)
                                         webhook = await sendDataToSupabase('webhook', {
