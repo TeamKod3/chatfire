@@ -406,7 +406,7 @@ class WhatsAppInstance {
                             }
 
                             if(msg.message.extendedTextMessage) {
-                                const {text} = msg.message.extendedTextMessage
+                                const text = msg.message.extendedTextMessage.text.toUpperCase().trim()
                                 console.log({text})
                                 if (text === '#sair') {
                                     console.log('Vai sair')
