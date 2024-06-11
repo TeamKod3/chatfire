@@ -192,7 +192,7 @@ async function getSingleBot(empresaId) {
 
 async function getConversasWhereBot() {
     try {
-        const {data, error} = await supabase.from('conversas').select('*').eq('Status', 'Bot').order('created_at', {ascending: false}).limit(1)
+        const {data, error} = await supabase.from('conversas').select('*').in('Status', ['Bot', 'Setor']).order('created_at', {ascending: false}).limit(1)
         if(error) {
             console.error('Deu erro no supabase erro: ', error)
             return null
