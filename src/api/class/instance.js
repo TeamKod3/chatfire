@@ -408,7 +408,7 @@ class WhatsAppInstance {
 
                             if(conversa) {
 
-                                if(conversa.Status === 'Espera' || conversa.Status === 'Em Atendimento' || conversa.Status === 'Bot') {
+                                if(conversa.Status === 'Espera' || conversa.Status === 'Em Atendimento' || conversa.Status === 'Bot' || conversa.Status === 'Setor') {
                                     if(msg.message.extendedTextMessage) {
                                         const text = msg.message.extendedTextMessage.text.toUpperCase().trim()
                                         console.log({text})
