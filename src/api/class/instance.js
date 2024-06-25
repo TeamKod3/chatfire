@@ -151,18 +151,6 @@ class WhatsAppInstance {
                     lastDisconnect?.error?.output?.statusCode !==
                     DisconnectReason.loggedOut
                 ) {
-                    this.contadorDeReconexao += 1
-                    if(this.contadorDeReconexao === 10) {
-                        await this.collection.drop().then((r) => {
-                            logger.info('STATE: Droped collection')
-                        })
-                        if(this.instance.conexaoId && !this.duplicado){
-                            await updateDataInTable('conexoes', {id: this.clientId}, {status_conexao: 'desconectado', qrcode: '', Status: false})
-                            await deleteDataFromtable('setor_conexao', {id_conexao: this.clientId})
-                        }
-                        delete WhatsAppInstances[this.key]
-                        return
-                    }
                     await this.init()
                 } else {
                     await this.collection.drop().then((r) => {
