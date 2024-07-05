@@ -305,7 +305,6 @@ class WhatsAppInstance {
 
                             const idApi = uuidv4()
                             const conversa = await getSingleConversaByConexao(wppUser, this.key)
-                            console.log({conversa})
                             let msg = message
 
                             let fileName;
@@ -323,7 +322,7 @@ class WhatsAppInstance {
                                 const webhook  = await getIdWebHookMessage(message.message.extendedTextMessage.contextInfo.stanzaId)
                                 quotedId = webhook.id
                             }
-
+                            console.log('aqui')
                             const contactSend = await getContato(wppUser, this.empresaId)
                             if(!contactSend) {
                                 let numeroFormatado
