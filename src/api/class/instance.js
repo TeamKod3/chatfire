@@ -317,7 +317,12 @@ class WhatsAppInstance {
                             let contactId
                             let contatoId
                             console.log('aqui3')
-                            const imgUrl = await sock.profilePictureUrl(remoteJid)
+                            let imgUrl
+                            try {
+                                imgUrl = await sock.profilePictureUrl(remoteJid)
+                            } catch (e) {
+                                console.log(e)
+                            }
                             console.log('aqui2')
 
 
