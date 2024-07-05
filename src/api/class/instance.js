@@ -311,12 +311,13 @@ class WhatsAppInstance {
                             let fileUrl;
                             let bucketUrl = "https://fntyzzstyetnbvrpqfre.supabase.co/storage/v1/object/public/chat/arquivos"
                             let webhook
+                            console.log('aqui')
 
                             let quotedId
                             let contactId
                             let contatoId
                             const imgUrl = await sock.profilePictureUrl(remoteJid)
-                            console.log('aqui')
+                            console.log('aqui2')
 
 
                             if(message.message.extendedTextMessage && message.message.extendedTextMessage.contextInfo.quotedMessage){
