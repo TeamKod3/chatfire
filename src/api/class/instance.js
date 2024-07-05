@@ -522,8 +522,6 @@ class WhatsAppInstance {
                                 }
 
                             } else {
-                                const imgUrl = await sock.profilePictureUrl(remoteJid)
-                                
                                 await this.workWithMessageType(messageType, sock, msg, idApi, fileUrl, bucketUrl)
                                 const conversa = await sendDataToSupabase('conversas', {
                                     numero_contato: wppUser,
