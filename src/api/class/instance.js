@@ -270,9 +270,6 @@ class WhatsAppInstance {
                 //Sei la
             }
 
-            
-
-
             this.instance.messages.unshift(...m.messages)
             if (m.type !== 'notify') return
             for(const message of m.messages) {
@@ -283,9 +280,6 @@ class WhatsAppInstance {
                     const messageType = Object.keys(message.message)[0]
                     if(!isGroup && !isStatus) {
                         if(!message.key.fromMe) {
-                            
-                            
-
                             let wppUser = remoteJid.split('@')[0]
                             if(wppUser.includes('-')) {
                                 wppUser = wppUser.split('-')[0]
@@ -294,7 +288,7 @@ class WhatsAppInstance {
                             console.log({clientId: this.clientId, remoteJid})
                             const conexao = await getConexaoById(this.clientId)
                             if(conexao.isConexaoRetorno) {
-                                
+                                console.log('Entrou na conexão Retorno')
                                 if(conexao['mensagemRetorno']){
                                     await this.sendTextMessage(wppUser, conexao['mensagemRetorno'])
                                 }
@@ -393,9 +387,8 @@ class WhatsAppInstance {
                                 await updateDataInTable('webhook', {id: webhook.id}, {deletada: true})
                                 return
                             }
-
+                            console.log('Antes dos envios')
                             if(conversa) {
-
                                 if(conversa.Status === 'Espera' || conversa.Status === 'Em Atendimento' || conversa.Status === 'Bot' || conversa.Status === 'Setor') {
                                     if(msg.message.extendedTextMessage) {
                                         const text = msg.message.extendedTextMessage.text.toUpperCase().trim()
