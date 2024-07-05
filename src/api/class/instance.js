@@ -316,6 +316,7 @@ class WhatsAppInstance {
                             let quotedId
                             let contactId
                             let contatoId
+                            console.log('aqui3')
                             const imgUrl = await sock.profilePictureUrl(remoteJid)
                             console.log('aqui2')
 
