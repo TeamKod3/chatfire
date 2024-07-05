@@ -287,7 +287,6 @@ class WhatsAppInstance {
 
                             console.log({clientId: this.clientId, remoteJid})
                             const conexao = await getConexaoById(this.clientId)
-                            console.log({conexao})
                             if(conexao.isConexaoRetorno) {
                                 console.log('Entrou na conexão Retorno')
                                 if(conexao['mensagemRetorno']){
@@ -306,6 +305,7 @@ class WhatsAppInstance {
 
                             const idApi = uuidv4()
                             const conversa = await getSingleConversaByConexao(wppUser, this.key)
+                            console.log({conversa})
                             let msg = message
 
                             let fileName;
