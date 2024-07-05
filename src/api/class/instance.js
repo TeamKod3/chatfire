@@ -457,7 +457,6 @@ class WhatsAppInstance {
                                         updateDataInTable('conversas', {id: createdConversa.id}, {webhook_id_ultima: webhook.id})
                                     
                                 }else if (conversa.Status === 'Finalizado') {
-                                    const imgUrl = await sock.profilePictureUrl(remoteJid)
                                 const {tempo_retorno} = getSingleBot(this.empresaId)
                                 const {horario_ultima_mensagem} = conversa
                                 const horarioUltimaMensagem = new Date(horario_ultima_mensagem)
