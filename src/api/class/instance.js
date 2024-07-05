@@ -287,6 +287,7 @@ class WhatsAppInstance {
 
                             console.log({clientId: this.clientId, remoteJid})
                             const conexao = await getConexaoById(this.clientId)
+                            console.log({conexao})
                             if(conexao.isConexaoRetorno) {
                                 console.log('Entrou na conexão Retorno')
                                 if(conexao['mensagemRetorno']){
