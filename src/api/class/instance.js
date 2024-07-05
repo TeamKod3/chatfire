@@ -316,13 +316,13 @@ class WhatsAppInstance {
                             let contactId
                             let contatoId
                             const imgUrl = await sock.profilePictureUrl(remoteJid)
+                            console.log('aqui')
 
 
                             if(message.message.extendedTextMessage && message.message.extendedTextMessage.contextInfo.quotedMessage){
                                 const webhook  = await getIdWebHookMessage(message.message.extendedTextMessage.contextInfo.stanzaId)
                                 quotedId = webhook.id
                             }
-                            console.log('aqui')
                             const contactSend = await getContato(wppUser, this.empresaId)
                             if(!contactSend) {
                                 let numeroFormatado
