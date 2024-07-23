@@ -5,7 +5,8 @@ exports.Text = async (req, res) => {
     )
     return res.status(201).json({ error: false, data: {
         key: data.key,
-        message: data.message
+        message: data.message,
+        instance_key: data.instance_key
     } })
 }
 
