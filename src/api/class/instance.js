@@ -629,6 +629,11 @@ class WhatsAppInstance {
         //     }
         // })
 
+        sock?.ev.on('message-receipt.update', async(oi) => {
+            console.log('message-receipt.update')
+            console.log(oi)
+        })
+
         sock?.ev.on('groups.upsert', async (newChat) => {
             // console.log('groups.upsert ❌❌❌❌❌❌')
             //console.log(newChat)
