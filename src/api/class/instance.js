@@ -267,11 +267,15 @@ class WhatsAppInstance {
         // on new mssage
         sock?.ev.on('messages.upsert', async (m) => {
             if (m.type === 'prepend'){
+                console.log('Prepend')
                 //Sei la
             }
 
             this.instance.messages.unshift(...m.messages)
-            if (m.type !== 'notify') return
+            if (m.type !== 'notify') {
+                console.log('Not Notify')
+                return
+            }
             for(const message of m.messages) {
                 try{
                     const {remoteJid} = message.key
