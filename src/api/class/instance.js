@@ -32,7 +32,7 @@ class WhatsAppInstance {
         defaultQueryTimeoutMs: undefined,
         printQRInTerminal: false,
         logger: pino({
-            level: 'silent',
+            level: 'debug', //silent
         }),
     }
     key = ''
