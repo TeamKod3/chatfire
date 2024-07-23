@@ -576,9 +576,8 @@ class WhatsAppInstance {
             }
         })
 
-        sock?.ev.on(`CB:message`, async(data) => {
-            console.log('CB:message')
-            console.log(data)
+        sock?.ev.on('messages', async(data) => {
+            console.log('messages')
         })
 
         sock?.ev.on('messages.update', async (messages) => {
