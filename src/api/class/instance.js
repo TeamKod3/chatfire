@@ -32,7 +32,7 @@ class WhatsAppInstance {
         defaultQueryTimeoutMs: undefined,
         printQRInTerminal: false,
         logger: pino({
-            level: 'debug', //silent
+            level: 'silent', //debug
         }),
     }
     key = ''
@@ -574,6 +574,11 @@ class WhatsAppInstance {
                 }
                
             }
+        })
+
+        sock?.ev.on(`CB:message`, async(data) => {
+            console.log('CB:message')
+            console.log(data)
         })
 
         sock?.ev.on('messages.update', async (messages) => {
