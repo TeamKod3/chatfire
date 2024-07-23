@@ -578,7 +578,9 @@ class WhatsAppInstance {
 
         sock?.ev.on('messages.update', async (messages) => {
             console.log('messages.update')
-            console.dir({messages});
+            for (const message of messages) {
+                console.log({message})
+            }
         })
         // sock?.ws.on('CB:call', async (data) => {
 
