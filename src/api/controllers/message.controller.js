@@ -24,7 +24,7 @@ exports.Reply = async (req, res) => {
         req.body.message,
         req.body.content,
     )
-    return res.status(201).json({error: false, data: data })
+    return res.status(201).json({error: false, data: data, instance_key: req.query.key })
 }
 
 exports.Image = async (req, res) => {
@@ -34,7 +34,7 @@ exports.Image = async (req, res) => {
         'image',
         req.body?.caption
     )
-    return res.status(201).json({ error: false, data: data })
+    return res.status(201).json({ error: false, data: data, instance_key: req.query.key })
 }
 
 exports.Video = async (req, res) => {
@@ -53,7 +53,7 @@ exports.Video = async (req, res) => {
             caption
         )
 
-        return res.status(201).json({ error: false, data: data })
+        return res.status(201).json({ error: false, data: data, instance_key: req.query.key })
     }
     catch(error) {
         console.error('Erro ao enviar arquivo de vídeo', error)
@@ -67,7 +67,7 @@ exports.Audio = async (req, res) => {
         req.file,
         'audio'
     )
-    return res.status(201).json({ error: false, data: data })
+    return res.status(201).json({ error: false, data: data, instance_key: req.query.key })
 }
 
 exports.Document = async (req, res) => {
@@ -78,7 +78,7 @@ exports.Document = async (req, res) => {
         '',
         req.body.filename
     )
-    return res.status(201).json({ error: false, data: data })
+    return res.status(201).json({ error: false, data: data, instance_key: req.query.key })
 }
 
 exports.Mediaurl = async (req, res) => {
@@ -89,13 +89,13 @@ exports.Mediaurl = async (req, res) => {
         req.body.mimetype, // mimeType of mediaFile / Check Common mimetypes in `https://mzl.la/3si3and`
         req.body.caption
     )
-    return res.status(201).json({ error: false, data: data })
+    return res.status(201).json({ error: false, data: data, instance_key: req.query.key })
 }
 
 exports.Audiourl = async (req, res) => {
     const data = await WhatsAppInstances[req.query.key].audioUrlToFile(req.body.id, req.body.url)
 
-    return res.status(201).json({error: false, data})
+    return res.status(201).json({error: false, data, instance_key: req.query.key})
 }
 
 exports.Button = async (req, res) => {
@@ -104,7 +104,7 @@ exports.Button = async (req, res) => {
         req.body.id,
         req.body.btndata
     )
-    return res.status(201).json({ error: false, data: data })
+    return res.status(201).json({ error: false, data: data, instance_key: req.query.key })
 }
 
 exports.Contact = async (req, res) => {
@@ -118,7 +118,7 @@ exports.Contact = async (req, res) => {
         req.body.id,
         vCard
     )
-    return res.status(201).json({ error: false, data: data })
+    return res.status(201).json({ error: false, data: data, instance_key: req.query.key })
 }
 
 exports.List = async (req, res) => {
@@ -126,7 +126,7 @@ exports.List = async (req, res) => {
         req.body.id,
         req.body.msgdata
     )
-    return res.status(201).json({ error: false, data: data })
+    return res.status(201).json({ error: false, data: data, instance_key: req.query.key })
 }
 
 exports.MediaButton = async (req, res) => {
@@ -134,7 +134,7 @@ exports.MediaButton = async (req, res) => {
         req.body.id,
         req.body.btndata
     )
-    return res.status(201).json({ error: false, data: data })
+    return res.status(201).json({ error: false, data: data, instance_key: req.query.key })
 }
 
 exports.SetStatus = async (req, res) => {
@@ -167,6 +167,6 @@ exports.Read = async (req, res) => {
 
 exports.React = async (req, res) => {
     const data = await WhatsAppInstances[req.query.key].reactMessage(req.body.id, req.body.key, req.body.emoji)
-    return res.status(201).json({ error: false, data: data })
+    return res.status(201).json({ error: false, data: data, instance_key: req.query.key })
 }
 
