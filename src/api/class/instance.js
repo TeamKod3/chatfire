@@ -553,8 +553,6 @@ class WhatsAppInstance {
                                 this.name = message.pushName
                                 await updateDataInTable('conexoes', {id: this.clientId}, {Nome: this.name})
                             }
-                            console.log('Nova mensagem')
-                            console.log({m, message})
                         }
                     }
                     if (config.markMessagesRead) {
@@ -575,8 +573,8 @@ class WhatsAppInstance {
         })
 
         sock?.ev.on('messages.update', async (messages) => {
-            //console.log('messages.update')
-            //console.dir(messages);
+            console.log('messages.update')
+            console.dir(messages);
         })
         // sock?.ws.on('CB:call', async (data) => {
 
