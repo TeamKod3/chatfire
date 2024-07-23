@@ -285,7 +285,6 @@ class WhatsAppInstance {
                                 wppUser = wppUser.split('-')[0]
                             }
 
-                            console.log({clientId: this.clientId, remoteJid})
                             const conexao = await getConexaoById(this.clientId)
                             if(conexao.isConexaoRetorno) {
                                 console.log('Entrou na conexão Retorno')
@@ -311,19 +310,16 @@ class WhatsAppInstance {
                             let fileUrl;
                             let bucketUrl = "https://fntyzzstyetnbvrpqfre.supabase.co/storage/v1/object/public/chat/arquivos"
                             let webhook
-                            console.log('aqui')
 
                             let quotedId
                             let contactId
                             let contatoId
-                            console.log('aqui3')
                             let imgUrl
                             try {
                                 imgUrl = await sock.profilePictureUrl(remoteJid)
                             } catch (e) {
                                 console.log(e)
                             }
-                            console.log('aqui2')
 
 
                             if(message.message.extendedTextMessage && message.message.extendedTextMessage.contextInfo.quotedMessage){
@@ -557,6 +553,8 @@ class WhatsAppInstance {
                                 this.name = message.pushName
                                 await updateDataInTable('conexoes', {id: this.clientId}, {Nome: this.name})
                             }
+                            console.log('Nova mensagem')
+                            console.log({m, message})
                         }
                     }
                     if (config.markMessagesRead) {
