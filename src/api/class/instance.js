@@ -770,6 +770,7 @@ class WhatsAppInstance {
             this.getWhatsAppId(to),
             { text: message }
         )
+        data.instance_key = this.key
         return data
     }
 
