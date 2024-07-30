@@ -252,6 +252,7 @@ async function getContatoById(contactId) {
 
 async function updateDataInTable(tableName, matchCriteria, newData) {
     try {
+        console.log({production: global.production})
         console.log('update Data in table')
         console.log({tableName, matchCriteria, newData, uriSupabase, apiKeySupabase})
         const supabase = createClient( uriSupabase, apiKeySupabase);
