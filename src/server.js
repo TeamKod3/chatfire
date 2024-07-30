@@ -19,6 +19,8 @@ if (config.mongoose.enabled) {
     })
 }
 
+global.production = true
+
 initDBStats()
 
 const server = app.listen(config.port, async () => {

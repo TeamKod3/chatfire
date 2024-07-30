@@ -3,9 +3,11 @@ const { unlinkSync, readFileSync } = require('fs');
 
 // Create a single supabase client for interacting with your database
 
-const supabase = createClient( 'https://fntyzzstyetnbvrpqfre.supabase.co', 
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZudHl6enN0eWV0bmJ2cnBxZnJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTExMTM0NzksImV4cCI6MjAwNjY4OTQ3OX0.eaod7DsHG3Pc1ZBFSmvr3r6by-MtNf0hzjgjXzdN3Jk'
-); /** * Insert a new record into the specified table * @param {string} tableName 
+const uriSupabase = global.production ? 'https://fntyzzstyetnbvrpqfre.supabase.co' : 'https://ndxedvhrarwaiyrcvdzp.supabase.co'
+const apiKeySupabase = global.production ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZudHl6enN0eWV0bmJ2cnBxZnJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTExMTM0NzksImV4cCI6MjAwNjY4OTQ3OX0.eaod7DsHG3Pc1ZBFSmvr3r6by-MtNf0hzjgjXzdN3Jk' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5keGVkdmhyYXJ3YWl5cmN2ZHpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjE4Njk5OTEsImV4cCI6MjAzNzQ0NTk5MX0.lqwaEjPF5VuVWgxjZYdU_QWQELDknA9uYUzt-aoSRU4'
+
+
+ /** * Insert a new record into the specified table * @param {string} tableName 
  - The name of the table to insert the data into. * @param {object} data - The 
  data to insert. */
 
@@ -15,6 +17,7 @@ function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms));
 
 async function sendDataToSupabase(tableName, data) {
 	try {  
+        const supabase = createClient( uriSupabase, apiKeySupabase);
         const response = await supabase.from(tableName).insert([data]).select()
         if(response.error) {
             console.error('Error inserting data:', response.error, {tableName, data});
@@ -28,6 +31,7 @@ async function sendDataToSupabase(tableName, data) {
 }
 async function fetchAllDataFromTable(tableName) {
     try {
+        const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from(tableName).select('*');
 
         if(error) {
@@ -43,6 +47,7 @@ async function fetchAllDataFromTable(tableName) {
 
 async function fetchSetores(empresaId) {
     try {
+        const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('Setores').select('*').eq('id_empresas', empresaId).order('created_at', {ascending: false})
         if(error) {
             console.error('Deu erro no supabase erro: ', error)
@@ -58,6 +63,7 @@ async function fetchSetores(empresaId) {
 
 async function getConexao(numero, empresaId, conexaoId) {
     try {
+        const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('conexoes').select('*').eq('Número', numero).eq('id_empresa', empresaId).neq('id', conexaoId).order('created_at', {ascending: false}).limit(1)
         if(error) {
             console.error('Deu erro no supabase erro: ', error)
@@ -73,6 +79,7 @@ async function getConexao(numero, empresaId, conexaoId) {
 
 async function getConexaoById(conexaoId) {
     try {
+        const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('conexoes').select('*').eq('id', conexaoId).limit(1)
         if(error) {
             console.error('Deu erro no supabase erro: ', error)
@@ -88,6 +95,7 @@ async function getConexaoById(conexaoId) {
 
 async function getIdConexoes(tableName, condition) {
     try {
+        const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from(tableName).select('id, id_empresa, Nome').eq('instance_key', condition).single()
 
         if(error) {
@@ -103,6 +111,7 @@ async function getIdConexoes(tableName, condition) {
 
 async function getIdWebHookMessage(id) {
     try{
+        const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('webhook').select('*').eq('idMensagem', id).order('created_at', {ascending: false}).limit(1)
         if(error){
             console.error('Deu erro no supabase: ', error)
@@ -118,6 +127,7 @@ async function getIdWebHookMessage(id) {
 
 async function getSingleWebhook(data) {
     try {
+        const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('webhook').select('*').eq('data', data).single()
         if(error) {
             return null
@@ -132,6 +142,7 @@ async function getSingleWebhook(data) {
 
 async function getSingleConversa(numero, empresaId) {
     try {
+        const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('conversas').select('*').eq('numero_contato', numero).eq('ref_empresa', empresaId).order('created_at', {ascending: false}).limit(1)
         if(error) {
             console.error('Deu erro no supabase erro: ', error)
@@ -147,6 +158,7 @@ async function getSingleConversa(numero, empresaId) {
 
 async function getSingleConversaByConexao(numero, keyInstancia) {
     try {
+        const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('conversas').select('*').eq('numero_contato', numero).eq('key_instancia', keyInstancia).order('created_at', {ascending: false}).limit(1)
         if(error) {
             console.error('Deu erro no supabase erro: ', error)
@@ -162,6 +174,7 @@ async function getSingleConversaByConexao(numero, keyInstancia) {
 
 async function getSingleSetor(setorId) {
     try {
+        const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('Setores').select('*').eq('id', setorId).limit(1)
         if(error) {
             console.error('Deu erro no supabase erro: ', error)
@@ -177,6 +190,7 @@ async function getSingleSetor(setorId) {
 
 async function getSingleBot(empresaId) {
     try {
+        const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('Bot').select('*').eq('id_empresa', empresaId).order('created_at', {ascending: false}).limit(1)
         if(error) {
             console.error('Deu erro no supabase erro: ', error)
@@ -192,6 +206,7 @@ async function getSingleBot(empresaId) {
 
 async function getConversasWhereBot() {
     try {
+        const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('conversas').select('*').in('Status', ['Bot', 'Setor']).order('created_at', {ascending: false}).limit(1)
         if(error) {
             console.error('Deu erro no supabase erro: ', error)
@@ -207,6 +222,7 @@ async function getConversasWhereBot() {
 
 async function getContato(numero, empresaId) {
     try {
+        const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('contatos').select('*').eq('numero', numero).eq('ref_empresa', empresaId).limit(1)
         if(error) {
             console.error('Deu erro no supabase erro: ', error)
@@ -221,6 +237,7 @@ async function getContato(numero, empresaId) {
 
 async function getContatoById(contactId) {
     try {
+        const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('contatos').select('*').eq('id', contactId).limit(1)
         if(error) {
             console.error('Deu erro no supabase erro: ', error)
@@ -235,6 +252,7 @@ async function getContatoById(contactId) {
 
 async function updateDataInTable(tableName, matchCriteria, newData) {
     try {
+        const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from(tableName).update(newData).match(matchCriteria)
 
         if(error) { 
@@ -251,6 +269,7 @@ async function updateDataInTable(tableName, matchCriteria, newData) {
 
 async function verifyConversaId(userNumber, key) {
     try {
+        const supabase = createClient( uriSupabase, apiKeySupabase);
         const { data, error } = await supabase
             .from('conversas')
             .select('*')
@@ -272,6 +291,7 @@ async function verifyConversaId(userNumber, key) {
 }
 
 async function adicionaRegistro(userNumber, key, idApi, nome) {
+    const supabase = createClient( uriSupabase, apiKeySupabase);
     const dadoExiste = await verifyConversaId(userNumber, key);
 	//console.log(dadoExiste)
     if (dadoExiste.length == 0) {
@@ -298,6 +318,7 @@ async function adicionaRegistro(userNumber, key, idApi, nome) {
 async function uploadSUp(filePath, filename) {
     const fileContent = readFileSync(filePath)
     const storagePath = `arquivos/${filename}`;
+    const supabase = createClient( uriSupabase, apiKeySupabase);
 
     let { error } = await supabase.storage
     .from('chat')
@@ -310,6 +331,7 @@ async function uploadSUp(filePath, filename) {
 
 async function deleteDataFromtable(tableName, matchCriteria) {
     try {
+        const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from(tableName).delete().match(matchCriteria)
 
         if (error) {
