@@ -2,6 +2,7 @@ global.production = true
 
 function branchSet(req, res, next) {
     const branch = req.get('branch') || req.headers['branch'];
+    console.log({branch})
     if(!branch) {
         global.production = true
     } else {

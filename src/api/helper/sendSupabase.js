@@ -254,7 +254,7 @@ async function updateDataInTable(tableName, matchCriteria, newData) {
     try {
         console.log({production: global.production})
         console.log('update Data in table')
-        console.log({tableName, matchCriteria, newData, uriSupabase, apiKeySupabase})
+        console.log({uriSupabase, apiKeySupabase})
         const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from(tableName).update(newData).match(matchCriteria)
 
