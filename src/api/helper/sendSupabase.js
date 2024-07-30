@@ -3,7 +3,8 @@ const { unlinkSync, readFileSync } = require('fs');
 
 // Create a single supabase client for interacting with your database
 
-
+        let uriSupabase = ''
+        let apiKeySupabase = ''
 
 
  /** * Insert a new record into the specified table * @param {string} tableName 
@@ -251,8 +252,8 @@ async function getContatoById(contactId) {
 
 async function updateDataInTable(tableName, matchCriteria, newData) {
     try {
-        const uriSupabase = global.production === true ? 'https://fntyzzstyetnbvrpqfre.supabase.co' : 'https://ndxedvhrarwaiyrcvdzp.supabase.co'
-        const apiKeySupabase = global.production === true ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZudHl6enN0eWV0bmJ2cnBxZnJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTExMTM0NzksImV4cCI6MjAwNjY4OTQ3OX0.eaod7DsHG3Pc1ZBFSmvr3r6by-MtNf0hzjgjXzdN3Jk' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5keGVkdmhyYXJ3YWl5cmN2ZHpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjE4Njk5OTEsImV4cCI6MjAzNzQ0NTk5MX0.lqwaEjPF5VuVWgxjZYdU_QWQELDknA9uYUzt-aoSRU4'
+        uriSupabase = global.production === true ? 'https://fntyzzstyetnbvrpqfre.supabase.co' : 'https://ndxedvhrarwaiyrcvdzp.supabase.co'
+        apiKeySupabase = global.production === true ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZudHl6enN0eWV0bmJ2cnBxZnJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTExMTM0NzksImV4cCI6MjAwNjY4OTQ3OX0.eaod7DsHG3Pc1ZBFSmvr3r6by-MtNf0hzjgjXzdN3Jk' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5keGVkdmhyYXJ3YWl5cmN2ZHpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjE4Njk5OTEsImV4cCI6MjAzNzQ0NTk5MX0.lqwaEjPF5VuVWgxjZYdU_QWQELDknA9uYUzt-aoSRU4'
         console.log({production: global.production})
         console.log('update Data in table')
         console.log({uriSupabase, apiKeySupabase})
