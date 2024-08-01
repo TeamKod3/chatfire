@@ -57,7 +57,7 @@ async function fetchSetores(empresaId) {
         const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('Setores').select('*').eq('id_empresas', empresaId).order('created_at', {ascending: false})
         if(error) {
-            console.error('Deu erro no supabase erro: ', error)
+            console.error('Deu erro no supabase fetchSetores erro: ', error)
             return null
         } else {
             return data.length > 0 ? data : null
@@ -74,7 +74,7 @@ async function getConexao(numero, empresaId, conexaoId) {
         const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('conexoes').select('*').eq('Número', numero).eq('id_empresa', empresaId).neq('id', conexaoId).order('created_at', {ascending: false}).limit(1)
         if(error) {
-            console.error('Deu erro no supabase erro: ', error)
+            console.error('Deu erro no supabase getConexao erro: ', error)
             return null
         } else {
             return data.length > 0 ? data[0] : null
@@ -91,7 +91,7 @@ async function getConexaoById(conexaoId) {
         const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('conexoes').select('*').eq('id', conexaoId).limit(1)
         if(error) {
-            console.error('Deu erro no supabase erro: ', error)
+            console.error('Deu erro no supabase getConexaoById erro: ', error)
             return null
         } else {
             return data.length > 0 ? data[0] : null
@@ -125,7 +125,7 @@ async function getIdWebHookMessage(id) {
         const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('webhook').select('*').eq('idMensagem', id).order('created_at', {ascending: false}).limit(1)
         if(error){
-            console.error('Deu erro no supabase: ', error)
+            console.error('Deu erro no supabase getIdWebHookMessage erro: ', error)
             return null
         }
         return data.length > 0 ? data[0] : null
@@ -158,7 +158,7 @@ async function getSingleConversa(numero, empresaId) {
         const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('conversas').select('*').eq('numero_contato', numero).eq('ref_empresa', empresaId).order('created_at', {ascending: false}).limit(1)
         if(error) {
-            console.error('Deu erro no supabase erro: ', error)
+            console.error('Deu erro no supabase erro getSingleConversa: ', error)
             return null
         } else {
             return data.length > 0 ? data[0] : null
@@ -175,7 +175,7 @@ async function getSingleConversaByConexao(numero, keyInstancia) {
         const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('conversas').select('*').eq('numero_contato', numero).eq('key_instancia', keyInstancia).order('created_at', {ascending: false}).limit(1)
         if(error) {
-            console.error('Deu erro no supabase erro: ', error)
+            console.error('Deu erro no supabase erro getSingleConversaByConexao: ', error)
             return null
         } else {
             return data.length > 0 ? data[0] : null
@@ -192,7 +192,7 @@ async function getSingleSetor(setorId) {
         const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('Setores').select('*').eq('id', setorId).limit(1)
         if(error) {
-            console.error('Deu erro no supabase erro: ', error)
+            console.error('Deu erro no supabase erro getSingleSetor: ', error)
             return null
         } else {
             return data.length > 0 ? data[0] : null
@@ -209,7 +209,7 @@ async function getSingleBot(empresaId) {
         const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('Bot').select('*').eq('id_empresa', empresaId).order('created_at', {ascending: false}).limit(1)
         if(error) {
-            console.error('Deu erro no supabase erro: ', error)
+            console.error('Deu erro no supabase erro getSingleBot: ', error)
             return null
         } else {
             return data.length > 0 ? data[0] : null
@@ -226,7 +226,7 @@ async function getConversasWhereBot() {
         const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('conversas').select('*').in('Status', ['Bot', 'Setor']).order('created_at', {ascending: false}).limit(1)
         if(error) {
-            console.error('Deu erro no supabase erro: ', error)
+            console.error('Deu erro no supabase erro getConversasWhereBot: ', error)
             return null
         } else {
             return data.length > 0 ? data : null
@@ -243,7 +243,7 @@ async function getContato(numero, empresaId) {
         const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('contatos').select('*').eq('numero', numero).eq('ref_empresa', empresaId).limit(1)
         if(error) {
-            console.error('Deu erro no supabase erro: ', error)
+            console.error('Deu erro no supabase erro getContato: ', error)
             return null
         }
         return data.length > 0 ? data[0] : null
@@ -259,7 +259,7 @@ async function getContatoById(contactId) {
         const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from('contatos').select('*').eq('id', contactId).limit(1)
         if(error) {
-            console.error('Deu erro no supabase erro: ', error)
+            console.error('Deu erro no supabase erro getContatoById: ', error)
             return null
         }
         return data.length > 0 ? data[0] : null
