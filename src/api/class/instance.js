@@ -945,7 +945,7 @@ class WhatsAppInstance {
         } catch(e) {
             console.log('Erro ao pegar a url da foto')
             console.log(e)
-            return false
+            throw new Error('Erro ao pegar a url da foto')
         }
         
 
