@@ -267,6 +267,7 @@ class WhatsAppInstance {
         // on new mssage
         sock?.ev.on('messages.upsert', async (m) => {
             console.log('messages.upsert')
+            console.log(m.type)
             if (m.type === 'prepend'){
                 console.log('Prepend')
                 //Sei la
@@ -583,7 +584,7 @@ class WhatsAppInstance {
         sock?.ev.on('messages.update', async (messages) => {
             // ashdiadbn
             console.log('messages.update')
-            console.log({messages})
+            console.log({key: messages.key, update: messages.update})
 
         })
         sock?.ws.on('CB:call', async (data) => {
