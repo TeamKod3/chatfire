@@ -933,10 +933,13 @@ class WhatsAppInstance {
 
     async DownloadProfile(of) {
         await this.verifyId(this.getWhatsAppId(of))
+        console.log('antes do profilePictureUrl')
         const ppUrl = await this.instance.sock?.profilePictureUrl(
             this.getWhatsAppId(of),
             'image'
         )
+        console.log('depois do profilePictureUrl')
+        console.log({ppUrl})
         return ppUrl
     }
 
