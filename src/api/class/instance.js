@@ -937,6 +937,11 @@ class WhatsAppInstance {
         
         console.log('antes do profilePictureUrl')
         console.log({id})
+        const lowRes = await this.instance.sock?.profilePictureUrl(
+            id,
+        )
+        console.log({lowRes})
+
         const ppUrl = await this.instance.sock?.profilePictureUrl(
             id,
             'image'
