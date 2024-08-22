@@ -584,6 +584,7 @@ class WhatsAppInstance {
         sock?.ev.on('messages.update', async (messages) => {
             // ashdiadbn
             console.log('messages.update')
+            console.log({messages})
             console.log({key: messages.key, update: messages.update})
 
         })
