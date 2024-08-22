@@ -285,7 +285,9 @@ class WhatsAppInstance {
                     const isStatus = remoteJid.indexOf('status@') >= 0
                     const messageType = Object.keys(message.message)[0]
                     if(!isGroup && !isStatus) {
+                        console.log('Antes do webhook')
                         const webhookMessage = await getWebhookMessage(message.key.id)
+                        console.log({webhookMessage})
                         if(!message.key.fromMe && !webhookMessage) {
                             let wppUser = remoteJid.split('@')[0]
                             if(wppUser.includes('-')) {
