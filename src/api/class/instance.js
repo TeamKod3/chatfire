@@ -285,11 +285,8 @@ class WhatsAppInstance {
                     const isStatus = remoteJid.indexOf('status@') >= 0
                     const messageType = Object.keys(message.message)[0]
                     if(!isGroup && !isStatus) {
-                        console.log('Antes do webhook')
                         const webhookMessage = await getWebhookMessage(message.key.id)
-                        console.log({webhookMessage})
                         if(!message.key.fromMe || !webhookMessage) {
-                            console.log('Entrou no salvamento')
                             let wppUser = remoteJid.split('@')[0]
                             if(wppUser.includes('-')) {
                                 wppUser = wppUser.split('-')[0]
@@ -400,7 +397,6 @@ class WhatsAppInstance {
                                 await updateDataInTable('webhook', {id: webhook.id}, {deletada: true})
                                 return
                             }
-                            console.log('Antes dos envios')
                             if(conversa) {
                                 if(conversa.Status === 'Espera' || conversa.Status === 'Em Atendimento' || conversa.Status === 'Bot' || conversa.Status === 'Setor') {
                                     if(msg.message.extendedTextMessage) {
@@ -415,7 +411,7 @@ class WhatsAppInstance {
                                         webhook = await sendDataToSupabase('webhook', {
                                             data: msg,
                                             contatos: msg.key.remoteJid.split('@')[0],
-                                            fromMe: false,
+                                            fromMe: message.key.fromMe,
                                             mensagem: msg.message.conversation ? msg.message.conversation : null,
                                             'áudio': msg.message.audioMessage ? msg.message.audioMessage.url : null,
                                             imagem: msg.message.imageMessage? msg.message.imageMessage.url : null,
@@ -446,7 +442,7 @@ class WhatsAppInstance {
                                         webhook = await sendDataToSupabase('webhook', {
                                             data: msg,
                                             contatos: msg.key.remoteJid.split('@')[0],
-                                            fromMe: false,
+                                            fromMe: message.key.fromMe,
                                             mensagem: msg.message.conversation ? msg.message.conversation : null,
                                             'áudio': msg.message.audioMessage ? msg.message.audioMessage.url : null,
                                             imagem: msg.message.imageMessage? msg.message.imageMessage.url : null,
@@ -475,7 +471,7 @@ class WhatsAppInstance {
                                         webhook = await sendDataToSupabase('webhook', {
                                             data: msg,
                                             contatos: msg.key.remoteJid.split('@')[0],
-                                            fromMe: false,
+                                            fromMe: message.key.fromMe,
                                             mensagem: msg.message.conversation ? msg.message.conversation : null,
                                             'áudio': msg.message.audioMessage ? msg.message.audioMessage.url : null,
                                             imagem: msg.message.imageMessage? msg.message.imageMessage.url : null,
@@ -505,7 +501,7 @@ class WhatsAppInstance {
                                     webhook = await sendDataToSupabase('webhook', {
                                         data: msg,
                                         contatos: msg.key.remoteJid.split('@')[0],
-                                        fromMe: false,
+                                        fromMe: message.key.fromMe,
                                         mensagem: msg.message.conversation ? msg.message.conversation : null,
                                         'áudio': msg.message.audioMessage ? msg.message.audioMessage.url : null,
                                         imagem: msg.message.imageMessage? msg.message.imageMessage.url : null,
@@ -541,7 +537,7 @@ class WhatsAppInstance {
                                 webhook = await sendDataToSupabase('webhook', {
                                     data: msg,
                                     contatos: msg.key.remoteJid.split('@')[0],
-                                    fromMe: false,
+                                    fromMe: message.key.fromMe,
                                     mensagem: msg.message.conversation ? msg.message.conversation : null,
                                     'áudio': msg.message.audioMessage ? msg.message.audioMessage.url : null,
                                     imagem: msg.message.imageMessage? msg.message.imageMessage.url : null,
