@@ -274,6 +274,9 @@ class WhatsAppInstance {
             }
 
             this.instance.messages.unshift(...m.messages)
+            for(const message of m.messages) {
+                console.log({message})
+            }
             if (m.type !== 'notify') {
                 return
             }
@@ -585,7 +588,7 @@ class WhatsAppInstance {
             // ashdiadbn
             console.log('messages.update')
             console.log({messages})
-            console.log({key: messages.key, update: messages.update})
+            console.log({key: messages[0].key, update: messages[0].update})
 
         })
         sock?.ws.on('CB:call', async (data) => {
