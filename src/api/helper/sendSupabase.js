@@ -85,6 +85,23 @@ async function getConexao(numero, empresaId, conexaoId) {
     }
 }
 
+async function getWebhookMessage(id) {
+    try {
+        setUri()
+        const supabase = createClient(uriSupabase, apiKeySupabase);
+        const {data, error} = await supabase.from('webhook').select('*').eq('idMensagem', id).order('created_at', {ascending: false}).limit(1)
+        if(error) {
+            console.error('Deu erro no supabase getConexao erro: ', error)
+            return null
+        } else {
+            return data.length > 0 ? data[0] : null
+        }
+    }catch(error) {
+        console.error('Ocorreu um erro inesperado', error)
+        return null
+    }
+}
+
 async function getConexaoById(conexaoId) {
     try {
         setUri()
@@ -391,6 +408,7 @@ module.exports = {
     getSingleSetor,
     getConexaoById,
     getContatoById,
-    getSingleConversaByConexao
+    getSingleConversaByConexao,
+    getWebhookMessage
 };
 

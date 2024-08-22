@@ -24,7 +24,7 @@ const mime = require('mime-types')
 
 
 const saveStats = require('../helper/saveStats');
-const {sendDataToSupabase, adicionaRegistro, uploadSUp, fetchAllDataFromTable, deleteDataFromtable, updateDataInTable, getIdConexoes, getSingleConversa, getSingleWebhook, getIdWebHookMessage, getContato, fetchSetores, getConexao, getSingleBot, getConexaoById, getContatoById, getSingleConversaByConexao} = require('../helper/sendSupabase');
+const {sendDataToSupabase, adicionaRegistro, uploadSUp, fetchAllDataFromTable, deleteDataFromtable, updateDataInTable, getIdConexoes, getSingleConversa, getSingleWebhook, getIdWebHookMessage, getContato, fetchSetores, getConexao, getSingleBot, getConexaoById, getContatoById, getSingleConversaByConexao, getWebhookMessage} = require('../helper/sendSupabase');
 
 class WhatsAppInstance {
     socketConfig = {
@@ -266,19 +266,25 @@ class WhatsAppInstance {
 
         // on new mssage
         sock?.ev.on('messages.upsert', async (m) => {
-            console.log('messages.upsert')
-            console.log(m.type)
             if (m.type === 'prepend'){
                 console.log('Prepend')
                 //Sei la
             }
 
             this.instance.messages.unshift(...m.messages)
-            for(const message of m.messages) {
-                console.log({message})
-            }
+            
             if (m.type !== 'notify') {
-                return
+                for(const message of m.messages) {
+                    if(!message.key.fromMe) {
+                        return
+                    } else {
+                        const webhookMessage = await getWebhookMessage(message.key.id)
+                        if(webhookMessage){
+                            return
+                        }
+                    }
+                    console.log({message})
+                }
             }
             for(const message of m.messages) {
                 try{
@@ -287,7 +293,8 @@ class WhatsAppInstance {
                     const isStatus = remoteJid.indexOf('status@') >= 0
                     const messageType = Object.keys(message.message)[0]
                     if(!isGroup && !isStatus) {
-                        if(!message.key.fromMe) {
+                        const webhookMessage = await getWebhookMessage(message.key.id)
+                        if(!message.key.fromMe && !webhookMessage) {
                             let wppUser = remoteJid.split('@')[0]
                             if(wppUser.includes('-')) {
                                 wppUser = wppUser.split('-')[0]
