@@ -266,6 +266,7 @@ class WhatsAppInstance {
 
         // on new mssage
         sock?.ev.on('messages.upsert', async (m) => {
+            console.log('messages.upsert')
             if (m.type === 'prepend'){
                 console.log('Prepend')
                 //Sei la
@@ -273,7 +274,6 @@ class WhatsAppInstance {
 
             this.instance.messages.unshift(...m.messages)
             if (m.type !== 'notify') {
-                console.log('Not Notify')
                 return
             }
             for(const message of m.messages) {
@@ -582,55 +582,15 @@ class WhatsAppInstance {
 
         sock?.ev.on('messages.update', async (messages) => {
             // ashdiadbn
+            console.log('messages.update')
+            console.log({messages})
+
         })
-        // sock?.ws.on('CB:call', async (data) => {
+        sock?.ws.on('CB:call', async (data) => {
+            console.log('CB:call')
+            console.log({data})
 
-        //     if (data.content) {
-        //         if (data.content.find((e) => e.tag === 'offer')) {
-        //             const content = data.content.find((e) => e.tag === 'offer')
-        //             if (
-        //                 ['all', 'call', 'CB:call', 'call:offer'].some((e) =>
-        //                     config.webhookAllowedEvents.includes(e)
-        //                 )
-        //             )
-        //                 await this.SendWebhook(
-        //                     'call_offer',
-        //                     {
-        //                         id: content.attrs['call-id'],
-        //                         timestamp: parseInt(data.attrs.t),
-        //                         user: {
-        //                             id: data.attrs.from,
-        //                             platform: data.attrs.platform,
-        //                             platform_version: data.attrs.version,
-        //                         },
-        //                     },
-        //                     this.key
-        //                 )
-        //         } else if (data.content.find((e) => e.tag === 'terminate')) {
-        //             const content = data.content.find(
-        //                 (e) => e.tag === 'terminate'
-        //             )
-
-        //             if (
-        //                 ['all', 'call', 'call:terminate'].some((e) =>
-        //                     config.webhookAllowedEvents.includes(e)
-        //                 )
-        //             )
-        //                 await this.SendWebhook(
-        //                     'call_terminate',
-        //                     {
-        //                         id: content.attrs['call-id'],
-        //                         user: {
-        //                             id: data.attrs.from,
-        //                         },
-        //                         timestamp: parseInt(data.attrs.t),
-        //                         reason: data.content[0].attrs.reason,
-        //                     },
-        //                     this.key
-        //                 )
-        //         }
-        //     }
-        // })
+        })
 
         sock?.ev.on('message-receipt.update', async(oi) => {
             console.log('message-receipt.update')
