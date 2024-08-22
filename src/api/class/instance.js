@@ -289,6 +289,7 @@ class WhatsAppInstance {
                         const webhookMessage = await getWebhookMessage(message.key.id)
                         console.log({webhookMessage})
                         if(!message.key.fromMe && !webhookMessage) {
+                            console.log('Entrou no salvamento')
                             let wppUser = remoteJid.split('@')[0]
                             if(wppUser.includes('-')) {
                                 wppUser = wppUser.split('-')[0]
