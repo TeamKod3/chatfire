@@ -276,20 +276,7 @@ class WhatsAppInstance {
             this.instance.messages.unshift(...m.messages)
             
             if (m.type !== 'notify') {
-                console.log('entrou no notify')
-                for(const message of m.messages) {
-                    if(!message.key.fromMe) {
-                        console.log('não é de mim ')
-                        return
-                    } else {
-                        console.log('é de mim ')
-                        const webhookMessage = await getWebhookMessage(message.key.id)
-                        if(webhookMessage){
-                            return
-                        }
-                    }
-                    console.log({message})
-                }
+                return
             }
             for(const message of m.messages) {
                 try{
