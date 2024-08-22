@@ -935,26 +935,10 @@ class WhatsAppInstance {
         const id = this.getWhatsAppId(of)
         await this.verifyId(id)
         
-        console.log('antes do profilePictureUrl')
-        console.log({id})
-        try {
-            const lowRes = await this.instance.sock?.profilePictureUrl(
-                id,
-            )
-            console.log({lowRes})
-        } catch(e) {
-            console.log('Erro ao pegar a url da foto')
-            console.log(e)
-            throw new Error('Erro ao pegar a url da foto')
-        }
-        
-
         const ppUrl = await this.instance.sock?.profilePictureUrl(
             id,
             'image'
         )
-        console.log('depois do profilePictureUrl')
-        console.log({ppUrl})
         return ppUrl
     }
 
