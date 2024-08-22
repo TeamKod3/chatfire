@@ -580,26 +580,17 @@ class WhatsAppInstance {
             }
         })
 
-        sock?.ev.on('messages', async(data) => {
-            console.log('messages')
-        })
 
         sock?.ev.on('messages.update', async (messages) => {
             // ashdiadbn
-            console.log('messages.update')
-            console.log({messages})
-            console.log({key: messages[0].key, update: messages[0].update})
 
         })
         sock?.ws.on('CB:call', async (data) => {
-            console.log('CB:call')
-            console.log({data})
-
+            //CB:call
         })
 
         sock?.ev.on('message-receipt.update', async(oi) => {
-            console.log('message-receipt.update')
-            console.log(oi)
+            //message-receipt.update
         })
 
         sock?.ev.on('groups.upsert', async (newChat) => {
