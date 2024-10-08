@@ -395,7 +395,9 @@ class WhatsAppInstance {
                                 return
                             }
 
-                            console.log({msg: msg.message.documentMessage})
+                            if(msg.message.documentMessage) {
+                                fileName = msg.message.documentMessage.fileName
+                            }
                             if(conversa) {
                                 if(conversa.Status === 'Espera' || conversa.Status === 'Em Atendimento' || conversa.Status === 'Bot' || conversa.Status === 'Setor') {
                                     if(msg.message.extendedTextMessage) {
@@ -411,7 +413,7 @@ class WhatsAppInstance {
                                             data: msg,
                                             contatos: msg.key.remoteJid.split('@')[0],
                                             fromMe: message.key.fromMe,
-                                            mensagem: msg.message.conversation ? msg.message.conversation : null,
+                                            mensagem: fileName ? fileName : msg.message.conversation ? msg.message.conversation : null,
                                             'áudio': msg.message.audioMessage ? msg.message.audioMessage.url : null,
                                             imagem: msg.message.imageMessage? msg.message.imageMessage.url : null,
                                             'legenda imagem': msg.message.imageMessage ? msg.message.imageMessage.caption : null,
@@ -442,7 +444,7 @@ class WhatsAppInstance {
                                             data: msg,
                                             contatos: msg.key.remoteJid.split('@')[0],
                                             fromMe: message.key.fromMe,
-                                            mensagem: msg.message.conversation ? msg.message.conversation : null,
+                                            mensagem: fileName ? fileName : msg.message.conversation ? msg.message.conversation : null,
                                             'áudio': msg.message.audioMessage ? msg.message.audioMessage.url : null,
                                             imagem: msg.message.imageMessage? msg.message.imageMessage.url : null,
                                             'legenda imagem': msg.message.imageMessage ? msg.message.imageMessage.caption : null,
@@ -471,7 +473,7 @@ class WhatsAppInstance {
                                             data: msg,
                                             contatos: msg.key.remoteJid.split('@')[0],
                                             fromMe: message.key.fromMe,
-                                            mensagem: msg.message.conversation ? msg.message.conversation : null,
+                                            mensagem: fileName ? fileName : msg.message.conversation ? msg.message.conversation : null,
                                             'áudio': msg.message.audioMessage ? msg.message.audioMessage.url : null,
                                             imagem: msg.message.imageMessage? msg.message.imageMessage.url : null,
                                             'legenda imagem': msg.message.imageMessage ? msg.message.imageMessage.caption : null,
@@ -501,7 +503,7 @@ class WhatsAppInstance {
                                         data: msg,
                                         contatos: msg.key.remoteJid.split('@')[0],
                                         fromMe: message.key.fromMe,
-                                        mensagem: msg.message.conversation ? msg.message.conversation : null,
+                                        mensagem: fileName ? fileName : msg.message.conversation ? msg.message.conversation : null,
                                         'áudio': msg.message.audioMessage ? msg.message.audioMessage.url : null,
                                         imagem: msg.message.imageMessage? msg.message.imageMessage.url : null,
                                         'legenda imagem': msg.message.imageMessage ? msg.message.imageMessage.caption : null,
@@ -537,7 +539,7 @@ class WhatsAppInstance {
                                     data: msg,
                                     contatos: msg.key.remoteJid.split('@')[0],
                                     fromMe: message.key.fromMe,
-                                    mensagem: msg.message.conversation ? msg.message.conversation : null,
+                                    mensagem: fileName ? fileName : msg.message.conversation ? msg.message.conversation : null,
                                     'áudio': msg.message.audioMessage ? msg.message.audioMessage.url : null,
                                     imagem: msg.message.imageMessage? msg.message.imageMessage.url : null,
                                     'legenda imagem': msg.message.imageMessage ? msg.message.imageMessage.caption : null,
