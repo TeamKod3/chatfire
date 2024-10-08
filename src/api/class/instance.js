@@ -660,8 +660,10 @@ class WhatsAppInstance {
     }
 
     async cadastraContatoDeConexao(numero) {
+        console.log('Entrou no cadastra Contato')
         const contatoExistente = await getContatoIsConexao(numero, this.empresaId)
         const numeroFormatado = formatarNumeroRelatorio(numero)
+        console.log({contatoExistente, numeroFormatado})
         if (contatoExistente) return
         await sendDataToSupabase('contatos', {
             nome: this.name,
