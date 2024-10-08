@@ -397,6 +397,8 @@ class WhatsAppInstance {
                                 await updateDataInTable('webhook', {id: webhook.id}, {deletada: true})
                                 return
                             }
+
+                            console.log({msg: msg.message.documentMessage})
                             if(conversa) {
                                 if(conversa.Status === 'Espera' || conversa.Status === 'Em Atendimento' || conversa.Status === 'Bot' || conversa.Status === 'Setor') {
                                     if(msg.message.extendedTextMessage) {
