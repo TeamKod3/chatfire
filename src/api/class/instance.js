@@ -674,6 +674,7 @@ class WhatsAppInstance {
             ref_empresa: this.empresaId,
             numero_relatorios: numeroFormatado
         })
+        console.log('Final do cadastras Contato de Conexao')
     }
 
     async updateIntanceInfo() {
