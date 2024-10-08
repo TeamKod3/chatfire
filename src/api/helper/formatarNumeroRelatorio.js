@@ -11,4 +11,6 @@ function formatarNumeroRelatorio(wppUserNumero) {
     return numeroFormatado
 }
 
-module.exports = formatarNumeroRelatorio
+module.exports = {
+    formatarNumeroRelatorio
+}
