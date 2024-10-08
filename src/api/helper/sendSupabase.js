@@ -288,7 +288,6 @@ async function getContatoById(contactId) {
 
 async function updateDataInTable(tableName, matchCriteria, newData) {
     try {
-        console.log({uriSupabase, apiKeySupabase})
         setUri()
         const supabase = createClient( uriSupabase, apiKeySupabase);
         const {data, error} = await supabase.from(tableName).update(newData).match(matchCriteria)
@@ -333,24 +332,18 @@ async function adicionaRegistro(userNumber, key, idApi, nome) {
     setUri()
     const supabase = createClient( uriSupabase, apiKeySupabase);
     const dadoExiste = await verifyConversaId(userNumber, key);
-	//console.log(dadoExiste)
     if (dadoExiste.length == 0) {
         const { data, error } = await supabase
             .from('conversas')
             .insert([{ nome_contato: nome, numero_contato: userNumber, key_instancia: key, id_api: idApi }]);
         
-        //console.log('dadoExiste', dadoExiste);
         if (error) {
-            //console.error('Erro ao inserir dados em conversas', error);
             return false;
         }
 
-        //console.log('Conversa adicionada com sucesso:', data);
         const resultNew = await verifyConversaId(userNumber, key);
-        //console.log('resultNew', resultNew);
         return resultNew;
     } else {
-        //console.log('Um registro correspondente já existe.');
         return dadoExiste;
     }
 }
