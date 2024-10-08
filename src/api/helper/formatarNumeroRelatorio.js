@@ -1,4 +1,4 @@
-export function formatarNumeroRelatorio(wppUserNumero) {
+function formatarNumeroRelatorio(wppUserNumero) {
     let numeroFormatado
     let numeroLocal = wppUserNumero.substring(2)
     if(numeroLocal.length === 11) {
@@ -8,4 +8,7 @@ export function formatarNumeroRelatorio(wppUserNumero) {
     } else {
         numeroFormatado = wppUserNumero
     }
+    return numeroFormatado
 }
+
+module.exports = formatarNumeroRelatorio
