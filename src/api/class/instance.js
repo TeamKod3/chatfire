@@ -24,7 +24,8 @@ const mime = require('mime-types')
 
 
 const saveStats = require('../helper/saveStats');
-const {sendDataToSupabase, adicionaRegistro, uploadSUp, fetchAllDataFromTable, deleteDataFromtable, updateDataInTable, getIdConexoes, getSingleConversa, getSingleWebhook, getIdWebHookMessage, getContato, fetchSetores, getConexao, getSingleBot, getConexaoById, getContatoById, getSingleConversaByConexao, getWebhookMessage} = require('../helper/sendSupabase');
+const {sendDataToSupabase, adicionaRegistro, uploadSUp, fetchAllDataFromTable, deleteDataFromtable, updateDataInTable, getIdConexoes, getSingleConversa, getSingleWebhook, getIdWebHookMessage, getContato, fetchSetores, getConexao, getSingleBot, getConexaoById, getContatoById, getSingleConversaByConexao, getWebhookMessage, getContatoIsConexao} = require('../helper/sendSupabase');
+const { formatarNumeroRelatorio } = require('../helper/formatarNumeroRelatorio')
 
 class WhatsAppInstance {
     socketConfig = {
@@ -190,14 +191,6 @@ class WhatsAppInstance {
                     if(this.clientId){
                         updateDataInTable('conexoes', {id: this.clientId}, {status_conexao: 'qrCode', qrcode: url})
                     }
-                    // if (this.instance.qrRetry >= config.instance.maxRetryQr) {
-                    //     // close WebSocket connection
-                    //     this.instance.sock.ws.close()
-                    //     // remove all events
-                    //     this.instance.sock.ev.removeAllListeners()
-                    //     this.instance.qr = ' '
-                    //     logger.info('socket connection terminated')
-                    // }
                 })
             }
         })
@@ -332,15 +325,7 @@ class WhatsAppInstance {
                             }
                             const contactSend = await getContato(wppUser, this.empresaId)
                             if(!contactSend) {
-                                let numeroFormatado
-                                let numeroLocal = wppUser.substring(2)
-                                if(numeroLocal.length === 11) {
-                                    numeroFormatado = `(${numeroLocal.substring(0,2)}) ${numeroLocal.substring(2,7)}-${numeroLocal.substring(7)}`
-                                } else if(numeroLocal.length === 10) {
-                                    numeroFormatado = `(${numeroLocal.substring(0,2)}) ${numeroLocal.substring(2,6)}-${numeroLocal.substring(6)}`
-                                } else {
-                                    numeroFormatado = wppUser
-                                }
+                                const numeroFormatado = formatarNumeroRelatorio(wppUser)
                                 const newContact = await sendDataToSupabase('contatos', {
                                     nome: message.pushName,
                                     numero: wppUser,
@@ -674,6 +659,19 @@ class WhatsAppInstance {
         }
     }
 
+    async cadastraContatoDeConexao(numero) {
+        const contatoExistente = await getContatoIsConexao(numero, this.empresaId)
+        const numeroFormatado = formatarNumeroRelatorio(numero)
+        if (contatoExistente) return
+        await sendDataToSupabase('contatos', {
+            nome: this.name,
+            numero, 
+            isconexao: true,
+            ref_empresa: this.empresaId,
+            numero_relatorios: numeroFormatado
+        })
+    }
+
     async updateIntanceInfo() {
         const {user} = await this.getInstanceDetail(this.key)
         const {id, name} = user
@@ -712,7 +710,7 @@ class WhatsAppInstance {
                 })
             }
         }
-        
+        this.cadastraContatoDeConexao(phone)
     }
 
     getWhatsAppId(id) {

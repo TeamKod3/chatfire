@@ -254,6 +254,21 @@ async function getConversasWhereBot() {
     }
 }
 
+async function getContatoIsConexao(numero, empresaId ) {
+    try {
+        setUri()
+        const supabase = createClient( uriSupabase, apiKeySupabase);
+        const {data, error} = await supabase.from('contatos').select('*').eq('numero', numero).eq('ref_empresa', empresaId).eq('isconexao', true).limit(1)
+        if(error) {
+            console.error('Ocorreu um erro inesperado na função getContatoIsConexao: ', error)
+            return null
+        }
+        return data.length > 0 ? data[0] : null
+    }catch(error) {
+        console.error('Ocorreu um erro inesperado na função getContatoIsConexao:', error)
+        return null
+    }
+} 
 async function getContato(numero, empresaId) {
     try {
         setUri()
@@ -402,6 +417,7 @@ module.exports = {
     getConexaoById,
     getContatoById,
     getSingleConversaByConexao,
-    getWebhookMessage
+    getWebhookMessage,
+    getContatoIsConexao
 };
 
