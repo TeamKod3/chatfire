@@ -453,7 +453,7 @@ class WhatsAppInstance {
                                         updateDataInTable('conversas', {id: createdConversa.id}, {webhook_id_ultima: webhook.id})
                                     
                                 }else if (conversa.Status === 'Finalizado') {
-                                const bot = getSingleBot(this.empresaId)
+                                const bot = await getSingleBot(this.empresaId)
                                 console.log({bot})
                                 const {tempo_retorno} = bot
                                 const {horario_ultima_mensagem} = conversa
