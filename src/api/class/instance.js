@@ -272,10 +272,11 @@ class WhatsAppInstance {
             for(const message of m.messages) {
                 try{
                     if(message.message.reactionMessage) {
-                        console.log('ReactionMessage')
-                        console.log({message: message.message})
-                        console.log({key: message.message.reactionMessage.key})
+                        const {reactionMessage} = message.message
+                        const {id} = reactionMessage.key
+                        console.log({id, reactionMessage})
 
+                        await updateDataInTable('webhook', {instance_key: this.key, idMensagem: id}, {reacao: reactionMessage.text})
                         return
                     }
                     const {remoteJid} = message.key
