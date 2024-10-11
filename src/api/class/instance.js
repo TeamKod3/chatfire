@@ -274,7 +274,6 @@ class WhatsAppInstance {
                     if(message.message.reactionMessage) {
                         const {reactionMessage} = message.message
                         const {id} = reactionMessage.key
-                        console.log({id, reactionMessage})
 
                         await updateDataInTable('webhook', {instance_key: this.key, idMensagem: id}, {reacao: reactionMessage.text})
                         return
@@ -461,6 +460,7 @@ class WhatsAppInstance {
                                 const tempoRetornoMs = tempo_retorno * 60 * 1000
                                 const horarioMaisTempoRetorno = new Date(horarioUltimaMensagem.getTime() + tempoRetornoMs)
                                 const tempoRetornoValido = horarioAtual <= horarioMaisTempoRetorno
+                                console.log({tempoRetornoValido, horarioAtual, horarioMaisTempoRetorno})
                                 if(tempoRetornoValido) {
                                     await this.workWithMessageType(messageType, sock, msg, conversa.id_api, fileUrl, bucketUrl)
                                         webhook = await sendDataToSupabase('webhook', {
