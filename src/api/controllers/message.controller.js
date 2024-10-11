@@ -1,3 +1,5 @@
+const { WhatsAppInstance } = require("../class/instance")
+
 exports.Text = async (req, res) => {
     const data = await WhatsAppInstances[req.query.key].sendTextMessage(
         req.body.id,
@@ -27,12 +29,25 @@ exports.Reply = async (req, res) => {
     return res.status(201).json({error: false, data: data, instance_key: req.query.key })
 }
 
+
 exports.Image = async (req, res) => {
     const data = await WhatsAppInstances[req.query.key].sendMediaFile(
         req.body.id,
         req.file,
         'image',
         req.body?.caption
+    )
+    return res.status(201).json({ error: false, data: data, instance_key: req.query.key })
+}
+
+exports.ReplyImage = async (req, res) => {
+    const data = await WhatsAppInstances[req.query.key].replyWithMediaFile(
+        req.body.id,
+        req.file,
+        'image',
+        req.body?.caption,
+        null,
+        req.body.message
     )
     return res.status(201).json({ error: false, data: data, instance_key: req.query.key })
 }
@@ -61,11 +76,49 @@ exports.Video = async (req, res) => {
     }    
 }
 
+exports.ReplyVideo = async (req, res) => {
+    const videoFile = req.file
+    const caption = req.body.caption || ''
+
+    if(!videoFile) {
+        return res.status(400).json({error: true, message: 'Nenhum arquivo de vídeo enviado'})
+    }
+
+    try {
+        const data = await WhatsAppInstances[req.query.key].replyWithMediaFile(
+            req.body.id,
+            videoFile,
+            'video',
+            caption,
+            null,
+            req.body.message
+        )
+
+        return res.status(201).json({ error: false, data: data, instance_key: req.query.key })
+    }
+    catch(error) {
+        console.error('Erro ao enviar arquivo de vídeo', error)
+        return res.status(500).json({error: true, message: 'Erro ao enviar arquivo de vídeo'})
+    }    
+}
+
 exports.Audio = async (req, res) => {
     const data = await WhatsAppInstances[req.query.key].sendMediaFile(
         req.body.id,
         req.file,
         'audio'
+    )
+    return res.status(201).json({ error: false, data: data, instance_key: req.query.key })
+}
+
+exports.ReplyAudio = async (req, res) => {
+    const data = await WhatsAppInstances[req.query.key].replyWithMediaFile(
+        req.body.id,
+        req.file,
+        'audio',
+        '',
+        null,
+        req.body.message
     )
     return res.status(201).json({ error: false, data: data, instance_key: req.query.key })
 }
@@ -77,6 +130,18 @@ exports.Document = async (req, res) => {
         'document',
         '',
         req.body.filename
+    )
+    return res.status(201).json({ error: false, data: data, instance_key: req.query.key })
+}
+
+exports.ReplyDoc = async (req, res) => {
+    const data = await WhatsAppInstances[req.query.key].replyWithMediaFile(
+        req.body.id,
+        req.file,
+        'document',
+        '',
+        req.body.filename,
+        req.body.message
     )
     return res.status(201).json({ error: false, data: data, instance_key: req.query.key })
 }

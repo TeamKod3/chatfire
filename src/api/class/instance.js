@@ -830,6 +830,24 @@ class WhatsAppInstance {
         return data
     }
 
+    async replyWithMediaFile(to, file, type, caption = '', filename, message) {
+        const jid = this.getWhatsAppId(to)
+        await this.verifyId(jid)
+
+        const data = await this.instance.sock?.sendMessage(
+            jid,
+            {
+                mimetype: file.mimetype,
+                [type]: file.buffer,
+                caption: caption,
+                ptt: type === 'audio' ? true : false,
+                fileName: filename ? filename : file.originalname,
+            },
+            {quoted: message}
+        )
+        return data
+    }
+
     async downloadFile(fileUrl, outputPath) {
         const writer = fs.createWriteStream(outputPath)
 

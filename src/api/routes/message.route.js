@@ -28,6 +28,11 @@ router
 router.route("/read").post(keyVerify, loginVerify, controller.Read)
 router.route("/react").post(keyVerify, loginVerify, controller.React)
 router.route('/reply').post(keyVerify, loginVerify, controller.Reply)
+router.route('/reply/image').post(keyVerify, loginVerify, controller.ReplyImage)
+router.route('/reply/video').post(keyVerify, loginVerify, controller.ReplyVideo)
+router.route('/reply/audio').post(keyVerify, loginVerify, controller.ReplyAudio)
+router.route('/reply/doc').post(keyVerify, loginVerify, controller.ReplyDoc)
+
 router.route('/delete').post(keyVerify, loginVerify, controller.DeleteMesage)
 
 
