@@ -274,6 +274,7 @@ class WhatsAppInstance {
                     if(message.message.reactionMessage) {
                         console.log('ReactionMessage')
                         console.log({message: message.message})
+                        console.log({key: message.message.reactionMessage.key})
                     }
                     const {remoteJid} = message.key
                     const isGroup = remoteJid.endsWith('@g.us')
