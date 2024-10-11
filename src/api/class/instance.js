@@ -454,17 +454,14 @@ class WhatsAppInstance {
                                     
                                 }else if (conversa.Status === 'Finalizado') {
                                 const bot = await getSingleBot(this.empresaId)
-                                console.log({bot})
                                 const {tempo_retorno} = bot
                                 const {horario_ultima_mensagem} = conversa
                                 const horarioUltimaMensagem = new Date(horario_ultima_mensagem)
                                 const horarioAtual = new Date()
                                 const tempoRetornoMs = tempo_retorno * 60 * 1000
                                 const timestampHoraioFinal = horarioUltimaMensagem.getTime() + tempoRetornoMs
-                                console.log({time: horarioUltimaMensagem.getTime(), tempoRetornoMs, tempo_retorno})
                                 const horarioMaisTempoRetorno = new Date(timestampHoraioFinal)
                                 const tempoRetornoValido = horarioAtual <= horarioMaisTempoRetorno
-                                console.log({tempoRetornoValido, horarioAtual, horarioMaisTempoRetorno, horarioUltimaMensagem, horario_ultima_mensagem, timestampHoraioFinal})
                                 if(tempoRetornoValido) {
                                     await this.workWithMessageType(messageType, sock, msg, conversa.id_api, fileUrl, bucketUrl)
                                         webhook = await sendDataToSupabase('webhook', {
