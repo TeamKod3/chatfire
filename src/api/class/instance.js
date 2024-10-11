@@ -271,7 +271,10 @@ class WhatsAppInstance {
             }
             for(const message of m.messages) {
                 try{
-                    console.log({message})
+                    if(message.message.reactionMessage) {
+                        console.log('ReactionMessage')
+                        console.log({message: message.message})
+                    }
                     const {remoteJid} = message.key
                     const isGroup = remoteJid.endsWith('@g.us')
                     const isStatus = remoteJid.indexOf('status@') >= 0
