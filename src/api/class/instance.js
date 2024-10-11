@@ -458,9 +458,10 @@ class WhatsAppInstance {
                                 const horarioUltimaMensagem = new Date(horario_ultima_mensagem)
                                 const horarioAtual = new Date()
                                 const tempoRetornoMs = tempo_retorno * 60 * 1000
-                                const horarioMaisTempoRetorno = new Date(horarioUltimaMensagem.getTime() + tempoRetornoMs)
+                                const timestampHoraioFinal = horarioUltimaMensagem.getTime() + tempoRetornoMs
+                                const horarioMaisTempoRetorno = new Date(timestampHoraioFinal)
                                 const tempoRetornoValido = horarioAtual <= horarioMaisTempoRetorno
-                                console.log({tempoRetornoValido, horarioAtual, horarioMaisTempoRetorno})
+                                console.log({tempoRetornoValido, horarioAtual, horarioMaisTempoRetorno, horarioUltimaMensagem, horario_ultima_mensagem, timestampHoraioFinal})
                                 if(tempoRetornoValido) {
                                     await this.workWithMessageType(messageType, sock, msg, conversa.id_api, fileUrl, bucketUrl)
                                         webhook = await sendDataToSupabase('webhook', {
