@@ -261,6 +261,7 @@ class WhatsAppInstance {
         sock?.ev.on('messages.upsert', async (m) => {
             if (m.type === 'prepend'){
                 //Sei la
+                console.log('Prepend')
             }
 
             this.instance.messages.unshift(...m.messages)
@@ -270,6 +271,7 @@ class WhatsAppInstance {
             }
             for(const message of m.messages) {
                 try{
+                    console.log({message})
                     const {remoteJid} = message.key
                     const isGroup = remoteJid.endsWith('@g.us')
                     const isStatus = remoteJid.indexOf('status@') >= 0
@@ -660,10 +662,8 @@ class WhatsAppInstance {
     }
 
     async cadastraContatoDeConexao(numero) {
-        console.log('Entrou no cadastra Contato')
         const contatoExistente = await getContatoIsConexao(numero, this.empresaId)
         const numeroFormatado = formatarNumeroRelatorio(numero)
-        console.log({contatoExistente, numeroFormatado, name: this.name, empresaId: this.empresaId})
         if (contatoExistente){
             return
         } 
@@ -674,7 +674,6 @@ class WhatsAppInstance {
             ref_empresa: this.empresaId,
             numero_relatorios: numeroFormatado
         })
-        console.log('Final do cadastras Contato de Conexao')
     }
 
     async updateIntanceInfo() {
