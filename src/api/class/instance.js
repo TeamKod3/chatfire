@@ -310,6 +310,7 @@ class WhatsAppInstance {
 
                             const idApi = uuidv4()
                             const conversa = await getSingleConversaByConexao(wppUser, this.key)
+
                             let msg = message
 
                             let fileName;
@@ -392,6 +393,7 @@ class WhatsAppInstance {
                             if(msg.message.documentMessage) {
                                 fileName = msg.message.documentMessage.fileName
                             }
+                            console.log({conversa})
                             if(conversa) {
                                 if(conversa.Status === 'Espera' || conversa.Status === 'Em Atendimento' || conversa.Status === 'Bot' || conversa.Status === 'Setor') {
                                     if(msg.message.extendedTextMessage) {
