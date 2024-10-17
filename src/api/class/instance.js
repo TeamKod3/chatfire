@@ -269,7 +269,10 @@ class WhatsAppInstance {
             if (m.type !== 'notify') {
                 return
             }
-            console.log({messages : m.messages})
+            if(m.messages.length > 1) {
+                console.log('Mensagens múltiplas')
+            }
+
             for(const message of m.messages) {
                 try{
                     if(message.message.reactionMessage) {
