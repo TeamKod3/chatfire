@@ -269,9 +269,9 @@ class WhatsAppInstance {
             if (m.type !== 'notify') {
                 return
             }
+            console.log({messages : m.messages})
             for(const message of m.messages) {
                 try{
-                    console.log({message})
                     if(message.message.reactionMessage) {
                         const {reactionMessage} = message.message
                         const {id} = reactionMessage.key
@@ -293,7 +293,6 @@ class WhatsAppInstance {
 
                             const conexao = await getConexaoById(this.clientId)
                             if(conexao.isConexaoRetorno) {
-                                console.log('Entrou na conexão Retorno')
                                 if(conexao['mensagemRetorno']){
                                     await this.sendTextMessage(wppUser, conexao['mensagemRetorno'])
                                 }
@@ -393,7 +392,6 @@ class WhatsAppInstance {
                             if(msg.message.documentMessage) {
                                 fileName = msg.message.documentMessage.fileName
                             }
-                            console.log({conversa})
                             if(conversa) {
                                 if(conversa.Status === 'Espera' || conversa.Status === 'Em Atendimento' || conversa.Status === 'Bot' || conversa.Status === 'Setor') {
                                     if(msg.message.extendedTextMessage) {
