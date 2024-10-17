@@ -288,9 +288,12 @@ class WhatsAppInstance {
 
 
         sock?.ev.on('messages.update', async (messages) => {
-            console.log('messages.update')
             const {key, update} = messages[0]
-            console.log({key, update})
+            const {id} = key
+            const {status} = update
+            if(status === 4) {
+                await updateDataInTable('webhook', {instance_key: this.key, idMensagem: id}, {lida: true}) 
+            }
 
         })
         sock?.ws.on('CB:call', async (data) => {
