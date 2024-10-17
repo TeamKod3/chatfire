@@ -288,7 +288,7 @@ class WhatsAppInstance {
 
 
         sock?.ev.on('messages.update', async (messages) => {
-            // ashdiadbn
+            console.log('messages.update')
 
         })
         sock?.ws.on('CB:call', async (data) => {
@@ -297,6 +297,7 @@ class WhatsAppInstance {
 
         sock?.ev.on('message-receipt.update', async(oi) => {
             //message-receipt.update
+            console.log('message-receipt.update')
         })
 
         sock?.ev.on('groups.upsert', async (newChat) => {
@@ -404,7 +405,6 @@ class WhatsAppInstance {
                     let fileName;
                     let fileUrl;
                     let bucketUrl = "https://fntyzzstyetnbvrpqfre.supabase.co/storage/v1/object/public/chat/arquivos"
-                    let webhook
 
                     let quotedId
                     let contactId
@@ -486,64 +486,16 @@ class WhatsAppInstance {
                         if(conversa.Status === 'Espera' || conversa.Status === 'Em Atendimento' || conversa.Status === 'Bot' || conversa.Status === 'Setor') {
                             if(msg.message.extendedTextMessage) {
                                 const text = msg.message.extendedTextMessage.text.toUpperCase().trim()
-                                console.log({text})
                                 if (text === '#SAIR') {
                                     await updateDataInTable('conversas', {id: conversa.id}, {Status: 'Finalizado'})
                                     return
                                 }
                             }
-                            await this.workWithMessageType(messageType, sock, msg, conversa.id_api, fileUrl, bucketUrl)
-                                webhook = await sendDataToSupabase('webhook', {
-                                    data: msg,
-                                    contatos: msg.key.remoteJid.split('@')[0],
-                                    fromMe: message.key.fromMe,
-                                    mensagem: fileName ? fileName : msg.message.conversation ? msg.message.conversation : null,
-                                    'áudio': msg.message.audioMessage ? msg.message.audioMessage.url : null,
-                                    imagem: msg.message.imageMessage? msg.message.imageMessage.url : null,
-                                    'legenda imagem': msg.message.imageMessage ? msg.message.imageMessage.caption : null,
-                                    file: msg.message.documentMessage ? msg.message.documentMessage.url : null,
-                                    'legenda file': msg.message.documentWithCaptionMessage ? msg.message.documentWithCaptionMessage.message.caption : null,
-                                    'id_api_conversa' : conversa.id_api,
-                                    video: msg.message.videoMessage ? msg.message.videoMessage.url : null,
-                                    idMensagem: msg.key.id,
-                                    replyWebhook: quotedId,
-                                    id_contato_webhook: contactId,
-                                    instance_key: this.key,
-                                    ignore_bot
-                                })
-                                await updateDataInTable('conversas', {id: conversa.id}, {webhook_id_ultima: webhook.id, ref_contatos: contatoId})
+                            await this.salvaWebhookEAtualizaConversa(messageType, sock, msg, conversa, fileUrl, bucketUrl, message, fileName, quotedId, contactId, ignore_bot, contatoId)
                             
                             
                         } else if(conversa.Status === 'Visualizar') {
-                            await this.workWithMessageType(messageType, sock, msg, idApi, fileUrl, bucketUrl)
-                            const createdConversa = await sendDataToSupabase('conversas', {
-                                numero_contato: wppUser,
-                                foto_contato: imgUrl,
-                                nome_contato: message.pushName,
-                                ref_empresa: this.empresaId,
-                                key_instancia: this.key,
-                                id_api: idApi,
-                                ref_contatos: contatoId
-                            })
-                                webhook = await sendDataToSupabase('webhook', {
-                                    data: msg,
-                                    contatos: msg.key.remoteJid.split('@')[0],
-                                    fromMe: message.key.fromMe,
-                                    mensagem: fileName ? fileName : msg.message.conversation ? msg.message.conversation : null,
-                                    'áudio': msg.message.audioMessage ? msg.message.audioMessage.url : null,
-                                    imagem: msg.message.imageMessage? msg.message.imageMessage.url : null,
-                                    'legenda imagem': msg.message.imageMessage ? msg.message.imageMessage.caption : null,
-                                    file: msg.message.documentMessage ? msg.message.documentMessage.url : null,
-                                    'legenda file': msg.message.documentWithCaptionMessage ? msg.message.documentWithCaptionMessage.message.caption : null,
-                                    'id_api_conversa' : idApi,
-                                    video: msg.message.videoMessage ? msg.message.videoMessage.url : null,
-                                    idMensagem: msg.key.id,
-                                    replyWebhook: quotedId,
-                                    id_contato_webhook: contactId,
-                                    instance_key: this.key,
-                                    ignore_bot
-                                })
-                                updateDataInTable('conversas', {id: createdConversa.id}, {webhook_id_ultima: webhook.id})
+                            await this.cadastraConversaESalvaWebhook(msg, message, fileName, idApi, quotedId, contactId, ignore_bot, wppUser, imgUrl, contatoId, messageType, sock, fileUrl, bucketUrl)
                             
                         }else if (conversa.Status === 'Finalizado') {
                         const bot = await getSingleBot(this.empresaId)
@@ -556,96 +508,15 @@ class WhatsAppInstance {
                         const horarioMaisTempoRetorno = new Date(timestampHoraioFinal)
                         const tempoRetornoValido = horarioAtual <= horarioMaisTempoRetorno
                         if(tempoRetornoValido) {
-                            await this.workWithMessageType(messageType, sock, msg, conversa.id_api, fileUrl, bucketUrl)
-                                webhook = await sendDataToSupabase('webhook', {
-                                    data: msg,
-                                    contatos: msg.key.remoteJid.split('@')[0],
-                                    fromMe: message.key.fromMe,
-                                    mensagem: fileName ? fileName : msg.message.conversation ? msg.message.conversation : null,
-                                    'áudio': msg.message.audioMessage ? msg.message.audioMessage.url : null,
-                                    imagem: msg.message.imageMessage? msg.message.imageMessage.url : null,
-                                    'legenda imagem': msg.message.imageMessage ? msg.message.imageMessage.caption : null,
-                                    file: msg.message.documentMessage ? msg.message.documentMessage.url : null,
-                                    'legenda file': msg.message.documentWithCaptionMessage ? msg.message.documentWithCaptionMessage.message.caption : null,
-                                    'id_api_conversa' : conversa.id_api,
-                                    video: msg.message.videoMessage ? msg.message.videoMessage.url : null,
-                                    idMensagem: msg.key.id,
-                                    replyWebhook: quotedId,
-                                    id_contato_webhook: contactId,
-                                    instance_key: this.key,
-                                    ignore_bot
-                                })
-                                await updateDataInTable('conversas', {id: conversa.id}, {webhook_id_ultima: webhook.id, ref_contatos: contatoId, Status: "Em Atendimento"})
+                            await this.salvaWebhookEAtualizaConversa(messageType, sock, msg, conversa, fileUrl, bucketUrl, message, fileName, quotedId, contactId, ignore_bot, contatoId, "Em Atendimento")
                         } else {
-                            await this.workWithMessageType(messageType, sock, msg, idApi, fileUrl, bucketUrl)
-                            const conversa = await sendDataToSupabase('conversas', {
-                                numero_contato: wppUser,
-                                foto_contato: imgUrl,
-                                nome_contato: message.pushName,
-                                ref_empresa: this.empresaId,
-                                key_instancia: this.key,
-                                id_api: idApi,
-                                Status: 'Bot',
-                                ref_contatos: contatoId
-                            })
-                            webhook = await sendDataToSupabase('webhook', {
-                                data: msg,
-                                contatos: msg.key.remoteJid.split('@')[0],
-                                fromMe: message.key.fromMe,
-                                mensagem: fileName ? fileName : msg.message.conversation ? msg.message.conversation : null,
-                                'áudio': msg.message.audioMessage ? msg.message.audioMessage.url : null,
-                                imagem: msg.message.imageMessage? msg.message.imageMessage.url : null,
-                                'legenda imagem': msg.message.imageMessage ? msg.message.imageMessage.caption : null,
-                                file: msg.message.documentMessage ? msg.message.documentMessage.url : null,
-                                'legenda file': msg.message.documentMessage ? msg.message.documentMessage.caption : null,
-                                'id_api_conversa' : idApi,
-                                video: msg.message.videoMessage ? msg.message.videoMessage.url : null,
-                                idMensagem: msg.key.id,
-                                replyWebhook: quotedId,
-                                id_contato_webhook: contactId,
-                                instance_key: this.key,
-                                ignore_bot
-                            })
-                            updateDataInTable('conversas', {id: conversa.id}, {webhook_id_ultima: webhook.id})
-                        
+                            await this.cadastraConversaESalvaWebhook(msg, message, fileName, idApi, quotedId, contactId, ignore_bot, wppUser, imgUrl, contatoId, messageType, sock, fileUrl, bucketUrl)
                         }
-
-                        
                         }
 
                     } else {
-                        await this.workWithMessageType(messageType, sock, msg, idApi, fileUrl, bucketUrl)
-                        const conversa = await sendDataToSupabase('conversas', {
-                            numero_contato: wppUser,
-                            foto_contato: imgUrl,
-                            nome_contato: message.pushName,
-                            ref_empresa: this.empresaId,
-                            key_instancia: this.key,
-                            id_api: idApi,
-                            Status: 'Bot',
-                            ref_contatos: contatoId
-                        })
-                        webhook = await sendDataToSupabase('webhook', {
-                            data: msg,
-                            contatos: msg.key.remoteJid.split('@')[0],
-                            fromMe: message.key.fromMe,
-                            mensagem: fileName ? fileName : msg.message.conversation ? msg.message.conversation : null,
-                            'áudio': msg.message.audioMessage ? msg.message.audioMessage.url : null,
-                            imagem: msg.message.imageMessage? msg.message.imageMessage.url : null,
-                            'legenda imagem': msg.message.imageMessage ? msg.message.imageMessage.caption : null,
-                            file: msg.message.documentMessage ? msg.message.documentMessage.url : null,
-                            'legenda file': msg.message.documentMessage ? msg.message.documentMessage.caption : null,
-                            'id_api_conversa' : idApi,
-                            video: msg.message.videoMessage ? msg.message.videoMessage.url : null,
-                            idMensagem: msg.key.id,
-                            replyWebhook: quotedId,
-                            id_contato_webhook: contactId,
-                            instance_key: this.key,
-                            ignore_bot
-                        })
-                        updateDataInTable('conversas', {id: conversa.id}, {webhook_id_ultima: webhook.id})
+                        await this.cadastraConversaESalvaWebhook(msg, message, fileName, idApi, quotedId, contactId, ignore_bot, wppUser, imgUrl, contatoId, messageType, sock, fileUrl, bucketUrl)
                     }
-                    //throw new Error('Mensagem não é minha!')
                 } else {
                     if(!this.name) {
                         this.name = message.pushName
@@ -666,6 +537,66 @@ class WhatsAppInstance {
         }catch(err){
             // process.exit()
         }
+    }
+
+    async salvaWebhookEAtualizaConversa(messageType, sock, msg, conversa, fileUrl, bucketUrl, message, fileName, quotedId, contactId, ignore_bot, contatoId, status) {
+        await this.workWithMessageType(messageType, sock, msg, conversa.id_api, fileUrl, bucketUrl)
+                                const webhook = await sendDataToSupabase('webhook', {
+                                    data: msg,
+                                    contatos: msg.key.remoteJid.split('@')[0],
+                                    fromMe: message.key.fromMe,
+                                    mensagem: fileName ? fileName : msg.message.conversation ? msg.message.conversation : null,
+                                    'áudio': msg.message.audioMessage ? msg.message.audioMessage.url : null,
+                                    imagem: msg.message.imageMessage? msg.message.imageMessage.url : null,
+                                    'legenda imagem': msg.message.imageMessage ? msg.message.imageMessage.caption : null,
+                                    file: msg.message.documentMessage ? msg.message.documentMessage.url : null,
+                                    'legenda file': msg.message.documentWithCaptionMessage ? msg.message.documentWithCaptionMessage.message.caption : null,
+                                    'id_api_conversa' : conversa.id_api,
+                                    video: msg.message.videoMessage ? msg.message.videoMessage.url : null,
+                                    idMensagem: msg.key.id,
+                                    replyWebhook: quotedId,
+                                    id_contato_webhook: contactId,
+                                    instance_key: this.key,
+                                    ignore_bot
+                                })
+                                if(status) {
+                                    await updateDataInTable('conversas', {id: conversa.id}, {webhook_id_ultima: webhook.id, ref_contatos: contatoId, Status: status})
+                                    return
+                                }
+                                await updateDataInTable('conversas', {id: conversa.id}, {webhook_id_ultima: webhook.id, ref_contatos: contatoId})
+    }
+
+    async cadastraConversaESalvaWebhook(msg, message, fileName, idApi, quotedId, contactId, ignore_bot, wppUser, imgUrl, contatoId, messageType, sock, fileUrl, bucketUrl){
+        await this.workWithMessageType(messageType, sock, msg, idApi, fileUrl, bucketUrl)
+                        const conversa = await sendDataToSupabase('conversas', {
+                            numero_contato: wppUser,
+                            foto_contato: imgUrl,
+                            nome_contato: message.pushName,
+                            ref_empresa: this.empresaId,
+                            key_instancia: this.key,
+                            id_api: idApi,
+                            Status: 'Bot',
+                            ref_contatos: contatoId
+                        })
+                        const webhook = await sendDataToSupabase('webhook', {
+                            data: msg,
+                            contatos: msg.key.remoteJid.split('@')[0],
+                            fromMe: message.key.fromMe,
+                            mensagem: fileName ? fileName : msg.message.conversation ? msg.message.conversation : null,
+                            'áudio': msg.message.audioMessage ? msg.message.audioMessage.url : null,
+                            imagem: msg.message.imageMessage? msg.message.imageMessage.url : null,
+                            'legenda imagem': msg.message.imageMessage ? msg.message.imageMessage.caption : null,
+                            file: msg.message.documentMessage ? msg.message.documentMessage.url : null,
+                            'legenda file': msg.message.documentMessage ? msg.message.documentMessage.caption : null,
+                            'id_api_conversa' : idApi,
+                            video: msg.message.videoMessage ? msg.message.videoMessage.url : null,
+                            idMensagem: msg.key.id,
+                            replyWebhook: quotedId,
+                            id_contato_webhook: contactId,
+                            instance_key: this.key,
+                            ignore_bot
+                        })
+                        updateDataInTable('conversas', {id: conversa.id}, {webhook_id_ultima: webhook.id})
     }
 
     async deleteInstance(key) {
