@@ -271,6 +271,7 @@ class WhatsAppInstance {
             }
             for(const message of m.messages) {
                 try{
+                    console.log({message})
                     if(message.message.reactionMessage) {
                         const {reactionMessage} = message.message
                         const {id} = reactionMessage.key
