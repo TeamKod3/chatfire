@@ -275,7 +275,7 @@ class WhatsAppInstance {
                     if(i === 0) continue
                     setTimeout(() => {
                         this.tratarMensagens(m.messages[i], sock, true)
-                    }, 1500);
+                    }, 3000);
                 }
                 return
             }
