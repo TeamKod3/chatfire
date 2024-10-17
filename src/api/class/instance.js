@@ -273,7 +273,9 @@ class WhatsAppInstance {
                 this.tratarMensagens(m.messages[0], sock)
                 for(let i = 0; i < m.messages.length; i++) {
                     if(i === 0) continue
-                    this.tratarMensagens(m.messages[i], sock, true)
+                    setTimeout(() => {
+                        this.tratarMensagens(m.messages[i], sock, true)
+                    }, 1500);
                 }
                 return
             }
@@ -479,6 +481,7 @@ class WhatsAppInstance {
                     if(msg.message.documentMessage) {
                         fileName = msg.message.documentMessage.fileName
                     }
+
                     if(conversa) {
                         if(conversa.Status === 'Espera' || conversa.Status === 'Em Atendimento' || conversa.Status === 'Bot' || conversa.Status === 'Setor') {
                             if(msg.message.extendedTextMessage) {
