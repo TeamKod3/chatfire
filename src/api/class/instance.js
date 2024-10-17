@@ -695,6 +695,9 @@ class WhatsAppInstance {
         const contatoExistente = await getContatoIsConexao(numero, this.empresaId)
         const numeroFormatado = formatarNumeroRelatorio(numero)
         if (contatoExistente){
+                await updateDataInTable('contatos', {id: contatoExistente.id}, {
+                    isconexao: true
+                })
             return
         } 
         await sendDataToSupabase('contatos', {

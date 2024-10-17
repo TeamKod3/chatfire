@@ -258,7 +258,7 @@ async function getContatoIsConexao(numero, empresaId ) {
     try {
         setUri()
         const supabase = createClient( uriSupabase, apiKeySupabase);
-        const {data, error} = await supabase.from('contatos').select('*').eq('numero', numero).eq('ref_empresa', empresaId).eq('isconexao', true).limit(1)
+        const {data, error} = await supabase.from('contatos').select('*').eq('numero', numero).eq('ref_empresa', empresaId).limit(1)
         if(error) {
             console.error('Ocorreu um erro inesperado na função getContatoIsConexao: ', error)
             return null
