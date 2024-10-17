@@ -289,7 +289,8 @@ class WhatsAppInstance {
 
         sock?.ev.on('messages.update', async (messages) => {
             console.log('messages.update')
-            console.log({messages})
+            const {key, update} = messages
+            console.log({key, update})
 
         })
         sock?.ws.on('CB:call', async (data) => {
