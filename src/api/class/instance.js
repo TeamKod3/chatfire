@@ -259,6 +259,7 @@ class WhatsAppInstance {
 
         // on new mssage
         sock?.ev.on('messages.upsert', async (m) => {
+            console.log({m})
             if (m.type === 'prepend'){
                 //Sei la
                 console.log('Prepend')
@@ -370,7 +371,6 @@ class WhatsAppInstance {
 
     async tratarMensagens(message, sock, ignore_bot = false){
         try{
-            console.log({message})
             if(message.message.reactionMessage) {
                 const {reactionMessage} = message.message
                 const {id} = reactionMessage.key
