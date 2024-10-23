@@ -370,6 +370,7 @@ class WhatsAppInstance {
 
     async tratarMensagens(message, sock, ignore_bot = false){
         try{
+            console.log({message})
             if(message.message.reactionMessage) {
                 const {reactionMessage} = message.message
                 const {id} = reactionMessage.key
