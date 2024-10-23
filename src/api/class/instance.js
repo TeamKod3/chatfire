@@ -259,7 +259,6 @@ class WhatsAppInstance {
 
         // on new mssage
         sock?.ev.on('messages.upsert', async (m) => {
-            console.log({m: m.messages})
             if (m.type === 'prepend'){
                 //Sei la
                 console.log('Prepend')
