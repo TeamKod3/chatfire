@@ -273,9 +273,12 @@ class WhatsAppInstance {
                 this.tratarMensagens(m.messages[0], sock)
                 for(let i = 0; i < m.messages.length; i++) {
                     if(i === 0) continue
-                    setTimeout(() => {
-                        this.tratarMensagens(m.messages[i], sock, true)
-                    }, 1500);
+                    await new Promise((resolve) => {
+                        setTimeout(() => {
+                            this.tratarMensagens(m.messages[i], sock, true)
+                            resolve()
+                        }, 1500);
+                    })
                 }
                 return
             }
