@@ -167,7 +167,7 @@ class WhatsAppInstance {
                 if(this.instance.conexaoId){
                     setTimeout(async () => {
                         this.updateIntanceInfo()
-                    }, 3000);
+                    }, 2000);
                 }
 
                 if (config.mongoose.enabled) {
@@ -383,7 +383,7 @@ class WhatsAppInstance {
             const messageType = Object.keys(message.message)[0]
             if(!isGroup && !isStatus) {
                 const webhookMessage = await getWebhookMessage(message.key.id)
-                if(!message.key.fromMe || !webhookMessage) {
+                if(!message.key.fromMe && !webhookMessage) {
                     let wppUser = remoteJid.split('@')[0]
                     if(wppUser.includes('-')) {
                         wppUser = wppUser.split('-')[0]
@@ -686,7 +686,7 @@ class WhatsAppInstance {
                 })
             }
         }
-        this.cadastraContatoDeConexao(phone)
+        await this.cadastraContatoDeConexao(phone)
     }
 
     getWhatsAppId(id) {
