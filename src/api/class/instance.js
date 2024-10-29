@@ -259,7 +259,6 @@ class WhatsAppInstance {
 
         // on new mssage
         sock?.ev.on('messages.upsert', async (m) => {
-            console.log({m: m.messages[0]})
 
             if (m.type === 'prepend'){
                 //Sei la
@@ -286,7 +285,7 @@ class WhatsAppInstance {
             }
 
             for(const message of m.messages) {
-                this.tratarMensagens(message, sock)
+                this.tratarMensagens(message, sock, false, m)
             }
         })
 
@@ -296,7 +295,7 @@ class WhatsAppInstance {
             const {id} = key
             const {status} = update
             if(status === 4) {
-                await updateDataInTable('webhook', {instance_key: this.key, idMensagem: id}, {lida: true}) 
+                await updateDataInTable('webhook', {instance_key: this.key, idMensagem: id}, {lida_zapp: true}) 
             }
 
         })
@@ -306,7 +305,6 @@ class WhatsAppInstance {
 
         sock?.ev.on('message-receipt.update', async(oi) => {
             //message-receipt.update
-            console.log('message-receipt.update')
         })
 
         sock?.ev.on('groups.upsert', async (newChat) => {
@@ -369,7 +367,7 @@ class WhatsAppInstance {
     }
 
 
-    async tratarMensagens(message, sock, ignore_bot = false){
+    async tratarMensagens(message, sock, ignore_bot = false, m){
         try{
             if(message.message.reactionMessage) {
                 const {reactionMessage} = message.message
@@ -384,8 +382,29 @@ class WhatsAppInstance {
             const messageType = Object.keys(message.message)[0]
             if(!isGroup && !isStatus) {
                 const webhookMessage = await getWebhookMessage(message.key.id)
-                if(!message.key.fromMe && !webhookMessage) {
-                    let wppUser = remoteJid.split('@')[0]
+                if(webhookMessage) return
+
+                // if(!message.key.fromMe) {
+                    await this.salvarMensagemWebHook(message, sock, ignore_bot, remoteJid, messageType)
+                // }
+            }
+            if (config.markMessagesRead) {
+                const unreadMessages = m.messages.map((msg) => {
+                    return {
+                        remoteJid: msg.key.remoteJid,
+                        id: msg.key.id,
+                        participant: msg.key?.participant,
+                    }
+                })
+                await sock.readMessages(unreadMessages)
+            }
+        }catch(err){
+            // process.exit()
+        }
+    }
+
+    async salvarMensagemWebHook(message, sock, ignore_bot = false, remoteJid,messageType) {
+        let wppUser = remoteJid.split('@')[0]
                     if(wppUser.includes('-')) {
                         wppUser = wppUser.split('-')[0]
                     }
@@ -526,26 +545,6 @@ class WhatsAppInstance {
                     } else {
                         await this.cadastraConversaESalvaWebhook(msg, message, fileName, idApi, quotedId, contactId, ignore_bot, wppUser, imgUrl, contatoId, messageType, sock, fileUrl, bucketUrl)
                     }
-                } else {
-                    if(!this.name) {
-                        this.name = message.pushName
-                        await updateDataInTable('conexoes', {id: this.clientId}, {Nome: this.name})
-                    }
-                }
-            }
-            if (config.markMessagesRead) {
-                const unreadMessages = m.messages.map((msg) => {
-                    return {
-                        remoteJid: msg.key.remoteJid,
-                        id: msg.key.id,
-                        participant: msg.key?.participant,
-                    }
-                })
-                await sock.readMessages(unreadMessages)
-            }
-        }catch(err){
-            // process.exit()
-        }
     }
 
     async salvaWebhookEAtualizaConversa(messageType, sock, msg, conversa, fileUrl, bucketUrl, message, fileName, quotedId, contactId, ignore_bot, contatoId, status) {
