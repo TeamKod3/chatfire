@@ -259,6 +259,8 @@ class WhatsAppInstance {
 
         // on new mssage
         sock?.ev.on('messages.upsert', async (m) => {
+            console.log({m: m.messages[0]})
+
             if (m.type === 'prepend'){
                 //Sei la
                 console.log('Prepend')
@@ -285,7 +287,6 @@ class WhatsAppInstance {
 
             for(const message of m.messages) {
                 this.tratarMensagens(message, sock)
-               
             }
         })
 
