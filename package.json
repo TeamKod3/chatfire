@@ -34,7 +34,7 @@
     "dependencies": {
         "@adiwajshing/keyed-db": "^0.2.4",
         "@supabase/supabase-js": "^2.38.1",
-        "@whiskeysockets/baileys": "^6.7.7",
+        "@whiskeysockets/baileys": "^6.7.9",
         "axios": "^1.6.8",
         "cors": "^2.8.5",
         "dotenv": "^16.4.5",
