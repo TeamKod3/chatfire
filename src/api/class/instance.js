@@ -453,11 +453,7 @@ class WhatsAppInstance {
         let nomeContato = message.pushName 
 
         if(message.key.fromMe) {
-            const jid = message.key.remoteJid
-            const {status} = await sock.fetchStatus(jid)
-            const imgUrl = await sock.profilePictureUrl(jid)
-            const profile = await sock.getBusinessProfile(jid)
-            console.log({status, imgUrl, profile})
+            nomeContato = null
         }
 
         const contactExists = await getContato(wppUser, this.empresaId)
@@ -473,6 +469,9 @@ class WhatsAppInstance {
             })
             contatoId = newContact.id
         } else {
+            if(!contactExists.nome && nomeContato) {
+                updateDataInTable('contatos', {id: contactExists.id}, {nome: nomeContato})
+            }
             contatoId = contactExists.id
         }
 
