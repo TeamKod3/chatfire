@@ -453,7 +453,11 @@ class WhatsAppInstance {
         let nomeContato = message.pushName 
 
         if(message.key.fromMe) {
-            await this.getUserStatus(message.key.remoteJid)
+            const jid = message.key.remoteJid
+            const {status} = await sock.fetchStatus(jid)
+            const imgUrl = await sock.profilePictureUrl(jid)
+            const profile = await sock.getBusinessProfile(jid)
+            console.log({status, imgUrl, profile})
         }
 
         const contactExists = await getContato(wppUser, this.empresaId)
