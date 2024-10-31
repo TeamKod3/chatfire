@@ -185,7 +185,6 @@ class WhatsAppInstance {
             if (qr) {
                 
                 QRCode.toDataURL(qr).then((url) => {
-                    console.log({qr, clientId: this.clientId})
                     this.instance.qr = url
                     this.instance.qrRetry++
                     if(this.clientId){
@@ -261,7 +260,6 @@ class WhatsAppInstance {
         sock?.ev.on('messages.upsert', async (m) => {
             if (m.type === 'prepend'){
                 //Sei la
-                console.log('Prepend')
             }
 
             this.instance.messages.unshift(...m.messages)
@@ -307,9 +305,6 @@ class WhatsAppInstance {
         })
 
         sock?.ev.on('groups.upsert', async (newChat) => {
-            // console.log('groups.upsert ❌❌❌❌❌❌')
-            //console.log(newChat)
-
             this.createGroupByApp(newChat)
             if (
                 ['all', 'groups', 'groups.upsert'].some((e) =>
@@ -343,8 +338,6 @@ class WhatsAppInstance {
         })
 
         sock?.ev.on('group-participants.update', async (newChat) => {
-            //console.log('group-participants.update')
-            //console.log(newChat)
             this.updateGroupParticipantsByApp(newChat)
             if (
                 [
@@ -442,7 +435,7 @@ class WhatsAppInstance {
         try {
             imgUrl = await sock.profilePictureUrl(remoteJid)
         } catch (e) {
-            console.log(e)
+            // erro
         }
 
 
@@ -751,8 +744,6 @@ class WhatsAppInstance {
             }
         }
 
-        console.log({resultado})
-
         return resultado
     }
 
@@ -905,12 +896,10 @@ class WhatsAppInstance {
 
     async getUserStatus(of) {
         const jid = this.getWhatsAppId(of)
-        console.log({jid, of})
         await this.verifyId(jid)
         const status = await this.instance.sock?.fetchStatus(
             jid
         )
-        console.log({status})
         return status
     }
 
@@ -1006,7 +995,6 @@ class WhatsAppInstance {
             )
             return res
         } catch (e) {
-            //console.log(e)
             return {
                 error: true,
                 message: 'Unable to update profile picture',
@@ -1207,7 +1195,6 @@ class WhatsAppInstance {
     }
 
     async updateGroupSubjectByApp(newChat) {
-        //console.log(newChat)
         try {
             if (newChat[0] && newChat[0].subject) {
                 let Chats = await this.getChat()
@@ -1222,7 +1209,6 @@ class WhatsAppInstance {
     }
 
     async updateGroupParticipantsByApp(newChat) {
-        //console.log(newChat)
         try {
             if (newChat && newChat.id) {
                 let Chats = await this.getChat()
@@ -1311,7 +1297,6 @@ class WhatsAppInstance {
             )
             return res
         } catch (e) {
-            //console.log(e)
             return {
                 error: true,
                 message:
@@ -1332,7 +1317,6 @@ class WhatsAppInstance {
             )
             return res
         } catch (e) {
-            //console.log(e)
             return {
                 error: true,
                 message:
@@ -1349,7 +1333,6 @@ class WhatsAppInstance {
             )
             return res
         } catch (e) {
-            //console.log(e)
             return {
                 error: true,
                 message:
@@ -1366,7 +1349,6 @@ class WhatsAppInstance {
             )
             return res
         } catch (e) {
-            //console.log(e)
             return {
                 error: true,
                 message:
