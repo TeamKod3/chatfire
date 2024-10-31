@@ -259,9 +259,6 @@ class WhatsAppInstance {
 
         // on new mssage
         sock?.ev.on('messages.upsert', async (m) => {
-            console.log({m})
-            console.log({message: m.messages[0]})
-
             if (m.type === 'prepend'){
                 //Sei la
                 console.log('Prepend')
@@ -453,13 +450,17 @@ class WhatsAppInstance {
             const webhook  = await getIdWebHookMessage(message.message.extendedTextMessage.contextInfo.stanzaId)
             quotedId = webhook.id
         }
-        gfasdghagdasgasdg
+        let nomeContato = message.pushName 
+
+        if(message.key.fromMe) {
+            await this.getUserStatus(message.key.remoteJid)
+        }
 
         const contactExists = await getContato(wppUser, this.empresaId)
         if(!contactExists) {
             const numeroFormatado = formatarNumeroRelatorio(wppUser)
             const newContact = await sendDataToSupabase('contatos', {
-                nome: message.pushName,
+                nome: nomeContato,
                 numero: wppUser,
                 ref_empresa: this.empresaId,
                 status_conversa: 'Visualizar',
